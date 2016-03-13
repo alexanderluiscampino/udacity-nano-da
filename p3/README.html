@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<!-- saved from url=(0022)http://localhost:6419/ -->
+<html lang="en" class=""><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <title>README.md - Grip</title>
+  <link rel="icon" href="http://localhost:6419/__/grip/static/favicon.ico">
+  <link rel="stylesheet" href="./README_files/github-ddca008893187b7986c76be0eadceb81ce228865ef41b6576053fbca78af3e94.css">
+  <link rel="stylesheet" href="./README_files/github2-74fbd3952ce16dcad6571d564f481a86d50305a755567a3e6c736aed50685650.css">
+  <style>
+    /* Page tweaks */
+    .preview-page {
+      margin-top: 64px;
+    }
+    /* Discussion tweaks */
+    .discussion-timeline.wide {
+      width: 920px;
+    }
+    .timeline-comment-wrapper > .timeline-comment:after,
+    .timeline-comment-wrapper > .timeline-comment:before {
+      content: none;
+    }
+  </style>
+<style type="text/css"></style><style type="text/css">.fancybox-margin{margin-right:0px;}</style></head>
+<body data-gclp-initialized="true" data-gistbox-initialized="true">
+  <div class="page">
+    <div id="preview-page" class="preview-page" data-autorefresh-url="/__/grip/refresh/">
+    <div class="container">
+      
+      
+      <div class="repository-with-sidebar repo-container with-full-navigation">
+
+        
+          <div class="repository-content">
+            <div id="readme" class="boxed-group flush clearfix announce instapaper_body md">
+              
+                <h3>
+                  <span class="octicon octicon-book"></span>
+                  README.md - Grip
+                </h3>
+              
+              <div id="grip-content" class="markdown-body entry-content">
+                <h1>
+<a id="user-content-p3-wrangle-openstreetmap-data" class="anchor" href="http://localhost:6419/#p3-wrangle-openstreetmap-data" aria-hidden="true"><span class="octicon octicon-link"></span></a>P3: Wrangle OpenStreetMap data</h1>
+
+<p>Project for Data Analysis class.</p>
+
+<h2>
+<a id="user-content-tools-used" class="anchor" href="http://localhost:6419/#tools-used" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tools used</h2>
+
+<p>To better explore the structure and what fields are available in data, I used an excellent <code>variety</code> tool here:</p>
+
+<p><a href="https://github.com/variety/variety-cli">https://github.com/variety/variety-cli</a></p>
+
+<p>Otherwise, all queries were made with Mongo shell.</p>
+
+<p>The repo with scripts used to clean the data and transform to JSON is here:</p>
+
+<p><a href="https://github.com/j-bennet/udacity-nano-da-p3">https://github.com/j-bennet/udacity-nano-da-p3</a></p>
+
+<h2>
+<a id="user-content-1-problems-encountered-in-dataset" class="anchor" href="http://localhost:6419/#1-problems-encountered-in-dataset" aria-hidden="true"><span class="octicon octicon-link"></span></a>1. Problems encountered in dataset:</h2>
+
+<ul>
+<li>Inconsistent punctuation.</li>
+<li>Abbreviated street names.</li>
+<li>Abbreviated (correctly and incorrectly) locality names.</li>
+<li>Abbreviated (correctly and incorrectly) train station designations.</li>
+<li>Incorrect or missing postcodes.</li>
+</ul>
+
+<h3>
+<a id="user-content-inconsistent-punctuation" class="anchor" href="http://localhost:6419/#inconsistent-punctuation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Inconsistent punctuation</h3>
+
+<p>The following replacements were made to fix the problem:</p>
+
+<table>
+<thead>
+<tr>
+<th>Text</th>
+<th>Replacement</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.</code></td>
+<td><code>.</code></td>
+<td>Space inserted between dot and next character</td>
+</tr>
+<tr>
+<td><code>/</code></td>
+<td><code>/</code></td>
+<td>Spaces inserted around slash</td>
+</tr>
+<tr>
+<td><code>«</code></td>
+<td><code>"</code></td>
+<td>Left quotation replaced with straight</td>
+</tr>
+<tr>
+<td><code>»</code></td>
+<td><code>"</code></td>
+<td>Right quotation replaced with straight</td>
+</tr>
+<tr>
+<td><code>№</code></td>
+<td>``</td>
+<td>Number signs stripped out as unnecessary</td>
+</tr>
+</tbody>
+</table>
+
+<h3>
+<a id="user-content-abbreviated-street-names" class="anchor" href="http://localhost:6419/#abbreviated-street-names" aria-hidden="true"><span class="octicon octicon-link"></span></a>Abbreviated street names</h3>
+
+<p>The following replacements were made:</p>
+
+<table>
+<thead>
+<tr>
+<th>Text</th>
+<th>Replacement</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ул.</code></td>
+<td><code>улица</code></td>
+<td>Equivalent of "st." to "street"</td>
+</tr>
+<tr>
+<td><code>уч.</code></td>
+<td><code>участок</code></td>
+<td>Equivalent of "pl." to "place"</td>
+</tr>
+<tr>
+<td><code>уч-k</code></td>
+<td><code>участок</code></td>
+<td>Same as above</td>
+</tr>
+</tbody>
+</table>
+
+<h3>
+<a id="user-content-abbreviated-locality-names" class="anchor" href="http://localhost:6419/#abbreviated-locality-names" aria-hidden="true"><span class="octicon octicon-link"></span></a>Abbreviated locality names</h3>
+
+<p>The following replacements were made:</p>
+
+<table>
+<thead>
+<tr>
+<th>Text</th>
+<th>Replacement</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ул.</code></td>
+<td><code>улица</code></td>
+<td>Equivalent of "st." to "street"</td>
+</tr>
+<tr>
+<td><code>уч.</code></td>
+<td><code>участок</code></td>
+<td>Equivalent of "pl." to "place"</td>
+</tr>
+<tr>
+<td><code>уч-k</code></td>
+<td><code>участок</code></td>
+<td>Same as above</td>
+</tr>
+<tr>
+<td><code>п.</code></td>
+<td><code>поселок</code></td>
+<td>Equivalent of "v." to "village"</td>
+</tr>
+<tr>
+<td><code>с.</code></td>
+<td><code>село</code></td>
+<td>Same as above</td>
+</tr>
+<tr>
+<td><code>д.</code></td>
+<td><code>деревня</code></td>
+<td>Same as above</td>
+</tr>
+<tr>
+<td><code>обл.</code></td>
+<td><code>область</code></td>
+<td>Equivalent of "r." to "region"</td>
+</tr>
+<tr>
+<td><code>сдт.</code></td>
+<td><code>садоводческое товарищество</code></td>
+<td>Equivalent of "fnc" to "farming non-profit community"</td>
+</tr>
+<tr>
+<td><code>снт.</code></td>
+<td><code>садоводческое товарищество</code></td>
+<td>Same as above</td>
+</tr>
+<tr>
+<td><code>СНТ.</code></td>
+<td><code>садоводческое товарищество</code></td>
+<td>Same as above</td>
+</tr>
+</tbody>
+</table>
+
+<h3>
+<a id="user-content-abbreviated-train-station-designations" class="anchor" href="http://localhost:6419/#abbreviated-train-station-designations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Abbreviated train station designations</h3>
+
+<p>All these abbreviations were standardised to a single form.</p>
+
+<table>
+<thead>
+<tr>
+<th>Text</th>
+<th>Replacement</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ж.д.</code></td>
+<td><code>ж/д</code></td>
+<td>Changed to the most commonly accepted "railway" abbreviation</td>
+</tr>
+<tr>
+<td><code>ж. д.</code></td>
+<td><code>ж/д</code></td>
+<td>Same as above</td>
+</tr>
+<tr>
+<td><code>ж.д.</code></td>
+<td><code>ж/д</code></td>
+<td>Same as above</td>
+</tr>
+<tr>
+<td><code>ж.-д.</code></td>
+<td><code>ж/д</code></td>
+<td>Same as above</td>
+</tr>
+<tr>
+<td><code>ж\д</code></td>
+<td><code>ж/д</code></td>
+<td>Same as above</td>
+</tr>
+<tr>
+<td><code>ж.\д.</code></td>
+<td><code>ж/д</code></td>
+<td>Same as above</td>
+</tr>
+</tbody>
+</table>
+
+<h3>
+<a id="user-content-postcodes" class="anchor" href="http://localhost:6419/#postcodes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Postcodes</h3>
+
+<p>There were a few incorrect postcodes within the data:</p>
+
+<pre data-initialized="true" data-gclp-id="0"><code>&gt; db.chelyabinsk.aggregate([
+...     {$match: {"address.street": {$exists: 1}, "address.postcode": /[^0-9]/}},
+...     {$group: {"_id": {"postcode": "$address.postcode"}, "count": {$sum: 1}}},
+...     {$sort: {"count": -1}}
+... ])
+{ "_id" : { "postcode" : "&lt;different&gt;" }, "count" : 3 }
+{ "_id" : { "postcode" : "&lt;различные&gt;" }, "count" : 2 }
+{ "_id" : { "postcode" : "15/3" }, "count" : 1 }
+</code></pre>
+
+<p>I only looked within data that has "address.street" populated, because it would make sense for those nodes to also have postcodes.</p>
+
+<p>There were also missing postcodes:</p>
+
+<pre data-initialized="true" data-gclp-id="1"><code>&gt; db.chelyabinsk.aggregate([
+...     {$match: {"address.street": {$exists: 1}, "address.postcode": {$exists: 0}}},
+...     {$group: {"_id": {"postcode": "$address.postcode"}, "count": {$sum: 1}}},
+...     {$sort: {"count": -1}}
+... ])
+{ "_id" : { "postcode" : null }, "count" : 11164 }
+</code></pre>
+
+<p>Here as well, since we have the address, postcodes should be known.</p>
+
+<h2>
+<a id="user-content-data-overview" class="anchor" href="http://localhost:6419/#data-overview" aria-hidden="true"><span class="octicon octicon-link"></span></a>Data overview</h2>
+
+<p>This section contains basic statistics about the dataset and the MongoDB queries used to gather them.</p>
+
+<h3>
+<a id="user-content-file-sizes" class="anchor" href="http://localhost:6419/#file-sizes" aria-hidden="true"><span class="octicon octicon-link"></span></a>File sizes</h3>
+
+<pre data-initialized="true" data-gclp-id="2"><code>165M ...... chelyabinsk.osm
+186M ...... chelyabinsk.osm.json
+</code></pre>
+
+<h3>
+<a id="user-content-number-of-documents" class="anchor" href="http://localhost:6419/#number-of-documents" aria-hidden="true"><span class="octicon octicon-link"></span></a>Number of documents</h3>
+
+<pre data-initialized="true" data-gclp-id="3"><code>&gt; db.chelyabinsk.find().count()
+906632
+</code></pre>
+
+<h3>
+<a id="user-content-number-of-nodes" class="anchor" href="http://localhost:6419/#number-of-nodes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Number of nodes</h3>
+
+<pre data-initialized="true" data-gclp-id="4"><code>&gt; db.chelyabinsk.find({type: "node"}).count()
+801884
+</code></pre>
+
+<h3>
+<a id="user-content-number-of-ways" class="anchor" href="http://localhost:6419/#number-of-ways" aria-hidden="true"><span class="octicon octicon-link"></span></a>Number of ways</h3>
+
+<pre data-initialized="true" data-gclp-id="5"><code>&gt; db.chelyabinsk.find({type: "way"}).count()
+104627
+</code></pre>
+
+<h3>
+<a id="user-content-number-of-unique-users" class="anchor" href="http://localhost:6419/#number-of-unique-users" aria-hidden="true"><span class="octicon octicon-link"></span></a>Number of unique users</h3>
+
+<pre data-initialized="true" data-gclp-id="6"><code>&gt; db.chelyabinsk.distinct("created.user").length
+359
+</code></pre>
+
+<h3>
+<a id="user-content-top-1-contributing-user" class="anchor" href="http://localhost:6419/#top-1-contributing-user" aria-hidden="true"><span class="octicon octicon-link"></span></a>Top 1 contributing user</h3>
+
+<pre data-initialized="true" data-gclp-id="7"><code>&gt; db.chelyabinsk.aggregate([{$group: {"_id": "$created.user", "count": {$sum: 1}}}, {$sort: {"count": -1}}, {$limit: 1}])
+{ "_id" : "OlegV", "count" : 249809 }
+</code></pre>
+
+<h3>
+<a id="user-content-number-of-users-having-only-1-post" class="anchor" href="http://localhost:6419/#number-of-users-having-only-1-post" aria-hidden="true"><span class="octicon octicon-link"></span></a>Number of users having only 1 post</h3>
+
+<pre data-initialized="true" data-gclp-id="8"><code>&gt; db.chelyabinsk.aggregate([
+...     {$group: {"_id": "$created.user", "count": {$sum: 1}}},
+...     {$sort: {"count": 1}},
+...     {$group: {"_id": "$count", "users": {$sum: 1}}},
+...     {$match: {"_id": 1}}
+... ])
+{ "_id" : 1, "users" : 51 }
+</code></pre>
+
+<h2>
+<a id="user-content-additional-statistics" class="anchor" href="http://localhost:6419/#additional-statistics" aria-hidden="true"><span class="octicon octicon-link"></span></a>Additional statistics</h2>
+
+<h3>
+<a id="user-content-speed-limits-on-the-roads-where-set" class="anchor" href="http://localhost:6419/#speed-limits-on-the-roads-where-set" aria-hidden="true"><span class="octicon octicon-link"></span></a>Speed limits on the roads (where set)</h3>
+
+<pre data-initialized="true" data-gclp-id="9"><code>&gt; db.chelyabinsk.aggregate([
+...     {$match: {type: "way", maxspeed: {$exists: true}}},
+...     {$group: {"_id": "$maxspeed", "count": {$sum: 1}}},
+...     {$sort: {"count": -1}},
+... ])
+{ "_id" : "60", "count" : 1300 }
+{ "_id" : "90", "count" : 378 }
+{ "_id" : "20", "count" : 242 }
+{ "_id" : "10", "count" : 222 }
+{ "_id" : "40", "count" : 51 }
+{ "_id" : "110", "count" : 14 }
+{ "_id" : "5", "count" : 12 }
+{ "_id" : "30", "count" : 4 }
+{ "_id" : "60;40;60", "count" : 2 }
+{ "_id" : "70", "count" : 1 }
+{ "_id" : "50", "count" : 1 }
+{ "_id" : "40;60", "count" : 1 }
+</code></pre>
+
+<p>Mostly it's 60km/h makes sense.</p>
+
+<h3>
+<a id="user-content-roads-marked-as-attraction" class="anchor" href="http://localhost:6419/#roads-marked-as-attraction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Roads marked as attraction</h3>
+
+<pre data-initialized="true" data-gclp-id="10"><code>&gt; db.chelyabinsk.find({type: "way", attraction: {$exists: true}}, {_id: 0, name: 1, attraction: 1}).pretty()
+{ "attraction" : "carousel" }
+{ "name" : "Аттракцион Везунчики", "attraction" : "carousel" }
+{ "attraction" : "carousel" }
+{ "name" : "Аттракцион Кенгуру", "attraction" : "bungee_jumping" }
+{ "attraction" : "bumper_car" }
+{ "attraction" : "pirate_ship" }
+{ "name" : "Аттракцион Дикий поезд", "attraction" : "roller_coaster" }
+{ "name" : "Веселый поезд", "attraction" : "carousel" }
+{ "name" : "Контактный зоопарк", "attraction" : "animal" }
+</code></pre>
+
+<h3>
+<a id="user-content-nodes-marked-as-attraction" class="anchor" href="http://localhost:6419/#nodes-marked-as-attraction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Nodes marked as attraction</h3>
+
+<pre data-initialized="true" data-gclp-id="11"><code>&gt; db.chelyabinsk.find({type: "node", attraction: {$exists: true}}, {_id: 0, name: 1, attraction: 1}).pretty()
+{ "attraction" : "big_wheel" }
+</code></pre>
+
+<h3>
+<a id="user-content-most-common-amenity-types" class="anchor" href="http://localhost:6419/#most-common-amenity-types" aria-hidden="true"><span class="octicon octicon-link"></span></a>Most common amenity types</h3>
+
+<pre data-initialized="true" data-gclp-id="12"><code>&gt; db.chelyabinsk.aggregate([
+...     {$match: {"amenity": {$exists: true}}},
+...     {$group: {"_id": "$amenity", "count": {$sum: 1}}},
+...     {$sort: {"count": -1}}
+... ])
+{ "_id" : "parking", "count" : 728 }
+{ "_id" : "kindergarten", "count" : 460 }
+{ "_id" : "fuel", "count" : 327 }
+{ "_id" : "school", "count" : 261 }
+{ "_id" : "atm", "count" : 190 }
+{ "_id" : "bank", "count" : 123 }
+{ "_id" : "hospital", "count" : 122 }
+{ "_id" : "cafe", "count" : 121 }
+{ "_id" : "pharmacy", "count" : 108 }
+{ "_id" : "car_wash", "count" : 78 }
+{ "_id" : "telephone", "count" : 55 }
+{ "_id" : "waste_basket", "count" : 54 }
+{ "_id" : "fast_food", "count" : 53 }
+{ "_id" : "public_building", "count" : 53 }
+{ "_id" : "police", "count" : 47 }
+{ "_id" : "college", "count" : 47 }
+{ "_id" : "place_of_worship", "count" : 41 }
+{ "_id" : "university", "count" : 40 }
+{ "_id" : "toilets", "count" : 39 }
+{ "_id" : "fountain", "count" : 39 }
+</code></pre>
+
+<h3>
+<a id="user-content-religions" class="anchor" href="http://localhost:6419/#religions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Religions</h3>
+
+<pre data-initialized="true" data-gclp-id="13"><code>&gt; db.chelyabinsk.aggregate([{$match: {"amenity": "place_of_worship"}}, {$group: {"_id": "$religion", "count": {$sum: 1}}}, {$sort: {"count": -1}}])
+{ "_id" : "christian", "count" : 28 }
+{ "_id" : null, "count" : 8 }
+{ "_id" : "muslim", "count" : 5 }
+</code></pre>
+
+<h3>
+<a id="user-content-cuisines" class="anchor" href="http://localhost:6419/#cuisines" aria-hidden="true"><span class="octicon octicon-link"></span></a>Cuisines</h3>
+
+<pre data-initialized="true" data-gclp-id="14"><code>&gt; db.chelyabinsk.aggregate([
+...     {$match: {"cuisine": {$exists: 1}}},
+...     {$group: {"_id": "$cuisine", "count": {$sum: 1}}},
+...     {$sort: {"count": -1}}
+... ])
+{ "_id" : "pizza", "count" : 12 }
+{ "_id" : "regional", "count" : 10 }
+{ "_id" : "sandwich", "count" : 9 }
+{ "_id" : "international", "count" : 7 }
+{ "_id" : "sushi", "count" : 5 }
+{ "_id" : "japanese", "count" : 2 }
+{ "_id" : "burger", "count" : 2 }
+{ "_id" : "coffee_shop", "count" : 1 }
+{ "_id" : "italian", "count" : 1 }
+{ "_id" : "spanish", "count" : 1 }
+{ "_id" : "Русская", "count" : 1 }
+{ "_id" : "east", "count" : 1 }
+{ "_id" : "пельмення-кулинария", "count" : 1 }
+</code></pre>
+
+<h3>
+<a id="user-content-aeroways-and-airports" class="anchor" href="http://localhost:6419/#aeroways-and-airports" aria-hidden="true"><span class="octicon octicon-link"></span></a>Aeroways and airports</h3>
+
+<pre data-initialized="true" data-gclp-id="15"><code>&gt; db.chelyabinsk.aggregate([
+...     {$match: {"aeroway": {$exists: 1}}},
+...     {$group: {"_id": "$aeroway", "count": {$sum: 1}}},
+...     {$sort: {"count": -1}}
+... ])
+{ "_id" : "taxiway", "count" : 16 }
+{ "_id" : "aerodrome", "count" : 6 }
+{ "_id" : "runway", "count" : 4 }
+{ "_id" : "helipad", "count" : 4 }
+{ "_id" : "terminal", "count" : 1 }
+{ "_id" : "apron", "count" : 1 }
+</code></pre>
+
+<p>Looks like we have some runways and taxiways there. Let's see airports only. Nodes are airport pins, and ways are airport enclosing polygons.</p>
+
+<pre data-initialized="true" data-gclp-id="16"><code>&gt; db.chelyabinsk.find(
+...     {"type": "node", "aeroway": "aerodrome"},
+...     {_id: 0, name: 1, type: 1, type_tag: 1, landuse: 1, closest_town: 1, iata: 1, icao: 1, "created.user": 1}
+... ).sort({name: 1})
+{ "name" : "Аэродром Калачёво", "created" : { "user" : "vespex" }, "type" : "node" }
+{ "name" : "Аэродром Шагол", "created" : { "user" : "glebius" }, "closest_town" : "Chelyabinsk", "icao" : "USCG", "type_tag" : "joint", "type" : "node" }
+{ "name" : "Аэропорт Баландино", "created" : { "user" : "OlegV" }, "iata" : "CEK", "closest_town" : "Chelyabinsk", "icao" : "USCC", "type_tag" : "public", "type" : "node" }
+
+&gt; db.chelyabinsk.find(
+...     {"type": "way", "aeroway": "aerodrome"},
+...     {_id: 0, name: 1, type: 1, type_tag: 1, landuse: 1, closest_town: 1, iata: 1, icao: 1, "created.user": 1}
+... ).sort({name: 1})
+{ "name" : "Аэродром Калачево", "created" : { "user" : "Shoorick" }, "closest_town" : "Chelyabinsk", "type_tag" : "public", "type" : "way" }
+{ "name" : "Аэропорт Баландино", "created" : { "user" : "Shoorick" }, "iata" : "CEK", "closest_town" : "Chelyabinsk", "icao" : "USCC", "type_tag" : "public", "type" : "way" }
+{ "name" : "Военный аэродром Шагол", "created" : { "user" : "Screenshot" }, "icao" : "USCG", "landuse" : "military", "type" : "way" }
+</code></pre>
+
+<h2>
+<a id="user-content-conclusion" class="anchor" href="http://localhost:6419/#conclusion" aria-hidden="true"><span class="octicon octicon-link"></span></a>Conclusion</h2>
+
+<p>Despite some inconsistencies in how addresses were entered (abbreviations, punctuations and such), the data 
+submitted to OpenStreetMap seems in pretty good shape. Missing data is a bigger problem. A lot of zipcodes (postal codes)
+are absent for known addresses. A lot of data points only have basic information specified about them. For example, schools
+and kindergartens don't have a grade designation. Very few amenities have schedule information (open / close hours).</p>
+
+<p>There is some inconsistency in node vs area naming. For example, if you look at one of the airports above, node is named "Аэродром Шагол",
+while way is named "Военный аэродром Шагол", even though it is the same airport. Node and way were entered by different users. Also, words
+"аэродром" (aerodrome) and "аэропорт" (airport) should not really be used interchangeably, but it looks like they are.</p>
+
+<p>However that may be, OpenStreetMap users made an amazing effort to collect all this data. The problems 
+encountered in the data could be eradicated by improving the UI of tools used for data entry, which are
+often not very user-friendly and have too many free-form, confusing options.</p>
+
+<h2>
+<a id="user-content-possible-ways-to-improve" class="anchor" href="http://localhost:6419/#possible-ways-to-improve" aria-hidden="true"><span class="octicon octicon-link"></span></a>Possible ways to improve</h2>
+
+<p>I'm going to look at two UI examples here. Both of them are using <code>id</code> online editor in OpenStreetMap. </p>
+
+<h3>
+<a id="user-content-1-adding-a-road" class="anchor" href="http://localhost:6419/#1-adding-a-road" aria-hidden="true"><span class="octicon octicon-link"></span></a>1. Adding a road</h3>
+
+<p>The editor itself is quite advanced. When you add the line to the map, there is a side window
+with lots of features you can assign to this line.</p>
+
+<p>First, you choose this line type. This field is in fact very helpful, because it's enhanced with
+search-as-you-type feature, no complaints there.</p>
+
+<p>Second, you enter road name. Here, it would be great to have 2 fields side-by-side, a drop-down
+for the road type that would have choices ("Road", "Street", "Court", "Boulevard") and a text 
+entry field for the name itself. Also, once you click on the field, it would be great to show
+examples of expected values, in an info bubble. For our example here, when we already know that
+user is entering a road, we could show something like this:</p>
+
+<pre data-initialized="true" data-gclp-id="17"><code>Enter the name of your street, without quotation mark or punctuation: Example:
+Martin Luther King
+Broadway
+Main
+
+Select the type of your street from the drop-down. Example:
+Road
+Street
+Avenue
+</code></pre>
+
+<p><a href="./README_files/osm-add-road.png" target="_blank"><img src="./README_files/osm-add-road.png" alt="Adding a road" title="Adding a road in OSM" style="max-width:100%;"></a></p>
+
+<p>In current OSM editor, while there's an "i" information icon next to the "name" field, the information it 
+displays is not very helpful. It only says that this is "The primary tag used for naming an element". I
+assume this is generic "name" tag description of any XML element. But it could be tailored to fit the
+element type.</p>
+
+<h3>
+<a id="user-content-2-editing-an-airport-area" class="anchor" href="http://localhost:6419/#2-editing-an-airport-area" aria-hidden="true"><span class="octicon octicon-link"></span></a>2. Editing an airport area</h3>
+
+<p><a href="./README_files/osm-edit-airway.png" target="_blank"><img src="./README_files/osm-edit-airway.png" alt="Editing an area" title="Editing an area in OSM" style="max-width:100%;"></a></p>
+
+<p>When I add an area and it encloses an already existing pin, it may make sense to auto-fill the area
+name and make it the same as the pin. Especially in our example, when we first created an "Airport terminal"
+node, and then drew an "Airport" area around it. They are both airport-related types, so we could assume
+user is creating an area for an already existing node. However, the "name" field didn't pick up the name from
+the terminal node. So we ended up with "Аэродром Шагол" for an airport node, and "Военный аэродром Шагол"
+for an airport area.</p>
+
+<p>Also, the word "аэродром" (aerodrome) could have been prevented by suggesting "airport" instead,
+either in an "info bubble", or some other type of message.</p>
+
+<h2>
+<a id="user-content-possible-problems-when-suggestions-implementation" class="anchor" href="http://localhost:6419/#possible-problems-when-suggestions-implementation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Possible problems when suggestions implementation</h2>
+
+<p>I believe that these suggestions could help to standardize and clean the data entered by users,
+get rid of excessive or incorrect punctuations, and unify names or abbreviations. But it's no silver
+bullet. A lot of people don't bother to read the tips, even if the pop-up is hovering right there.
+Also, if the interface becomes too restrictive, for example, user want to select "Court", and our drop-down
+only has "Street", "Road" and "Avenue", user may get frustrated and abandon the data entry.
+So even when adding multiple choice fields, we should have an option to select "Other..." and revert to
+free-form.</p>
+
+<p>Also, dynamic pages, context-dependent controls, and other flexibility features of the UI add complexity
+to the website development. This translates to more human-hours to develop and support. There's
+possibility of more bugs in complex interface. There's more edge cases to keep in mind. Performance
+may become an issue. Thus, we always have to find the balance and make the tool smart, but not
+too complex.</p>
+
+              </div>
+            </div>
+          </div>
+        
+
+      </div>
+    </div>
+  </div>
+  <div>&nbsp;</div>
+  </div><script>
+    function showCanonicalImages() {
+      var images = document.getElementsByTagName('img');
+      if (!images) {
+        return;
+      }
+      for (var index = 0; index < images.length; index++) {
+        var image = images[index];
+        if (image.getAttribute('data-canonical-src') && image.src !== image.getAttribute('data-canonical-src')) {
+          image.src = image.getAttribute('data-canonical-src');
+        }
+      }
+    }
+
+    function scrollToHash() {
+      if (location.hash && !document.querySelector(':target')) {
+        var element = document.getElementById('user-content-' + location.hash.slice(1));
+        if (element) {
+           element.scrollIntoView();
+        }
+      }
+    }
+
+    function autorefreshContent(eventSourceUrl) {
+      var initialTitle = document.title;
+      var contentElement = document.getElementById('grip-content');
+      var source = new EventSource(eventSourceUrl);
+      var isRendering = false;
+
+      source.onmessage = function(ev) {
+        var msg = JSON.parse(ev.data);
+        if (msg.updating) {
+          isRendering = true;
+          document.title = '(Rendering) ' + document.title;
+        } else {
+          isRendering = false;
+          document.title = initialTitle;
+          contentElement.innerHTML = msg.content;
+          showCanonicalImages();
+        }
+      }
+
+      source.onerror = function(e) {
+        if (e.readyState === EventSource.CLOSED && isRendering) {
+          isRendering = false;
+          document.title = initialTitle;
+        }
+      }
+    }
+
+    window.onhashchange = function() {
+      scrollToHash();
+    }
+
+    window.onload = function() {
+      scrollToHash();
+    }
+
+    showCanonicalImages();
+
+    var autorefreshUrl = document.getElementById('preview-page').getAttribute('data-autorefresh-url');
+    if (autorefreshUrl) {
+      autorefreshContent(autorefreshUrl);
+    }
+  </script>
+
+<form id="gclp-frame-form" target="gclp-frame" method="post" style="display: none;"></form><div class="gclp-code-grabber" data-gclp-id="0" style="left: 1371px; top: 2379.58px; display: none;" data-hasqtip="true"></div><div class="gclp-code-grabber" data-gclp-id="1" style="left: 1371px; top: 2694.58px; display: none;" data-hasqtip="true"></div><div class="gclp-code-grabber" data-gclp-id="2" style="left: 1371px; top: 3073.97px; display: none;" data-hasqtip="true"></div><div class="gclp-code-grabber" data-gclp-id="3" style="left: 1371px; top: 3219.97px; display: none;" data-hasqtip="true"></div><div class="gclp-code-grabber" data-gclp-id="4" style="left: 1371px; top: 3365.97px; display: none;" data-hasqtip="true"></div><div class="gclp-code-grabber" data-gclp-id="5" style="left: 1371px; top: 3511.97px; display: none;" data-hasqtip="true"></div><div class="gclp-code-grabber" data-gclp-id="6" style="left: 1371px; top: 3657.97px; display: none;" data-hasqtip="true"></div><div class="gclp-code-grabber" data-gclp-id="7" style="left: 1371px; top: 3803.97px; display: none;" data-hasqtip="true"></div><div class="gclp-code-grabber" data-gclp-id="8" style="left: 1371px; top: 3949.97px; display: none;" data-hasqtip="true"></div><div class="gclp-code-grabber" data-gclp-id="9" style="left: 1371px; top: 4267.36px; display: none;" data-hasqtip="true"></div><div class="gclp-code-grabber" data-gclp-id="10" style="left: 1371px; top: 4754.36px; display: none;" data-hasqtip="true"></div><div class="gclp-code-grabber" data-gclp-id="11" style="left: 1371px; top: 5060.36px; display: none;" data-hasqtip="true"></div><div class="gclp-code-grabber" data-gclp-id="12" style="left: 1371px; top: 5206.36px; display: none;" data-hasqtip="true"></div><div class="gclp-code-grabber" data-gclp-id="13" style="left: 1371px; top: 5812.36px; display: none;" data-hasqtip="true"></div><div class="gclp-code-grabber" data-gclp-id="14" style="left: 1371px; top: 5998.36px; display: none;" data-hasqtip="true"></div><div class="gclp-code-grabber" data-gclp-id="15" style="left: 1371px; top: 6464.36px; display: none;" data-hasqtip="true"></div><div class="gclp-code-grabber" data-gclp-id="16" style="left: 1371px; top: 6798.36px; display: none;" data-hasqtip="true"></div><div class="gclp-code-grabber" data-gclp-id="17" style="left: 1371px; top: 7959.14px; display: none;" data-hasqtip="true"></div></body></html>
