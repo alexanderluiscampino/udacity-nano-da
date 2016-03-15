@@ -1,0 +1,54 @@
+
+Time to fit: 0:02:58.938214
+
+Best parameters set:
+{'selection__k': 12, 'classifier__tol': 0.1, 'classifier__n_clusters': 2}
+
+Grid score:
+0.308 for {'selection__k': 10, 'classifier__tol': 1e-16, 'classifier__n_clusters': 2}
+0.313 for {'selection__k': 12, 'classifier__tol': 1e-16, 'classifier__n_clusters': 2}
+0.292 for {'selection__k': 17, 'classifier__tol': 1e-16, 'classifier__n_clusters': 2}
+0.294 for {'selection__k': 'all', 'classifier__tol': 1e-16, 'classifier__n_clusters': 2}
+0.318 for {'selection__k': 10, 'classifier__tol': 1e-08, 'classifier__n_clusters': 2}
+0.312 for {'selection__k': 12, 'classifier__tol': 1e-08, 'classifier__n_clusters': 2}
+0.299 for {'selection__k': 17, 'classifier__tol': 1e-08, 'classifier__n_clusters': 2}
+0.285 for {'selection__k': 'all', 'classifier__tol': 1e-08, 'classifier__n_clusters': 2}
+0.322 for {'selection__k': 10, 'classifier__tol': 0.0001, 'classifier__n_clusters': 2}
+0.320 for {'selection__k': 12, 'classifier__tol': 0.0001, 'classifier__n_clusters': 2}
+0.291 for {'selection__k': 17, 'classifier__tol': 0.0001, 'classifier__n_clusters': 2}
+0.269 for {'selection__k': 'all', 'classifier__tol': 0.0001, 'classifier__n_clusters': 2}
+0.319 for {'selection__k': 10, 'classifier__tol': 0.01, 'classifier__n_clusters': 2}
+0.317 for {'selection__k': 12, 'classifier__tol': 0.01, 'classifier__n_clusters': 2}
+0.274 for {'selection__k': 17, 'classifier__tol': 0.01, 'classifier__n_clusters': 2}
+0.283 for {'selection__k': 'all', 'classifier__tol': 0.01, 'classifier__n_clusters': 2}
+0.310 for {'selection__k': 10, 'classifier__tol': 0.1, 'classifier__n_clusters': 2}
+0.328 for {'selection__k': 12, 'classifier__tol': 0.1, 'classifier__n_clusters': 2}
+0.264 for {'selection__k': 17, 'classifier__tol': 0.1, 'classifier__n_clusters': 2}
+0.273 for {'selection__k': 'all', 'classifier__tol': 0.1, 'classifier__n_clusters': 2}
+
+Scored features: 12 selected
+                      Feature      Score Selected
+1     exercised_stock_options  22.610531     True
+2                       bonus  21.060002     True
+3                      salary  18.575703     True
+4             deferred_income  11.561888     True
+5         long_term_incentive  10.072455     True
+6            restricted_stock   8.964964     True
+7     shared_receipt_with_poi   8.746486     True
+8               loan_advances   7.242730     True
+9                    expenses   5.550684     True
+10    from_poi_to_this_person   5.344942     True
+11                      other   4.219888     True
+12    from_this_person_to_poi   2.426508     True
+13              director_fees   2.112762    False
+14                to_messages   1.698824    False
+15  restricted_stock_deferred   0.743493    False
+16          deferral_payments   0.221214    False
+17              from_messages   0.164164    False
+
+Pipeline(steps=[('minmaxer', MinMaxScaler(copy=True, feature_range=(0, 1))), ('selection', SelectKBest(k=12, score_func=<function f_classif at 0x1123dd7d0>)), ('classifier', KMeans(copy_x=True, init='k-means++', max_iter=300, n_clusters=2, n_init=10,
+    n_jobs=1, precompute_distances='auto', random_state=None, tol=0.1,
+    verbose=0))])
+	Accuracy: 0.54473	Precision: 0.15012	Recall: 0.51800	F1: 0.23278	F2: 0.34763
+	Total predictions: 15000	True positives: 1036	False positives: 5865	False negatives:  964	True negatives: 7135
+

@@ -1,0 +1,62 @@
+
+Time to fit: 0:01:34.279948
+
+Best parameters set:
+{'classifier__class_weight': 'balanced', 'selection__k': 17, 'classifier__C': 0.1}
+
+Grid score:
+0.284 for {'classifier__class_weight': 'balanced', 'selection__k': 10, 'classifier__C': 1e-05}
+0.331 for {'classifier__class_weight': 'balanced', 'selection__k': 12, 'classifier__C': 1e-05}
+0.358 for {'classifier__class_weight': 'balanced', 'selection__k': 17, 'classifier__C': 1e-05}
+0.355 for {'classifier__class_weight': 'balanced', 'selection__k': 20, 'classifier__C': 1e-05}
+0.357 for {'classifier__class_weight': 'balanced', 'selection__k': 'all', 'classifier__C': 1e-05}
+0.273 for {'classifier__class_weight': 'balanced', 'selection__k': 10, 'classifier__C': 0.01}
+0.312 for {'classifier__class_weight': 'balanced', 'selection__k': 12, 'classifier__C': 0.01}
+0.344 for {'classifier__class_weight': 'balanced', 'selection__k': 17, 'classifier__C': 0.01}
+0.351 for {'classifier__class_weight': 'balanced', 'selection__k': 20, 'classifier__C': 0.01}
+0.344 for {'classifier__class_weight': 'balanced', 'selection__k': 'all', 'classifier__C': 0.01}
+0.304 for {'classifier__class_weight': 'balanced', 'selection__k': 10, 'classifier__C': 0.1}
+0.350 for {'classifier__class_weight': 'balanced', 'selection__k': 12, 'classifier__C': 0.1}
+0.401 for {'classifier__class_weight': 'balanced', 'selection__k': 17, 'classifier__C': 0.1}
+0.399 for {'classifier__class_weight': 'balanced', 'selection__k': 20, 'classifier__C': 0.1}
+0.397 for {'classifier__class_weight': 'balanced', 'selection__k': 'all', 'classifier__C': 0.1}
+0.313 for {'classifier__class_weight': 'balanced', 'selection__k': 10, 'classifier__C': 1}
+0.361 for {'classifier__class_weight': 'balanced', 'selection__k': 12, 'classifier__C': 1}
+0.379 for {'classifier__class_weight': 'balanced', 'selection__k': 17, 'classifier__C': 1}
+0.393 for {'classifier__class_weight': 'balanced', 'selection__k': 20, 'classifier__C': 1}
+0.353 for {'classifier__class_weight': 'balanced', 'selection__k': 'all', 'classifier__C': 1}
+
+Scored features: 17 selected
+                        Feature      Score Selected
+1             total_stock_value  22.782108     True
+2       exercised_stock_options  22.610531     True
+3                         bonus  21.060002     True
+4                        salary  18.575703     True
+5                  total_income  17.182708     True
+6               deferred_income  11.561888     True
+7   fraction_poi_correspondence  10.222227     True
+8           long_term_incentive  10.072455     True
+9                total_payments   9.380237     True
+10             restricted_stock   8.964964     True
+11     total_poi_correspondence   8.773847     True
+12      shared_receipt_with_poi   8.746486     True
+13                loan_advances   7.242730     True
+14                     expenses   5.550684     True
+15      from_poi_to_this_person   5.344942     True
+16            fraction_from_poi   5.209650     True
+17                        other   4.219888     True
+18              fraction_to_poi   4.169084    False
+19      from_this_person_to_poi   2.426508    False
+20                director_fees   2.112762    False
+21                  to_messages   1.698824    False
+22    restricted_stock_deferred   0.743493    False
+23            deferral_payments   0.221214    False
+24                from_messages   0.164164    False
+
+Pipeline(steps=[('minmaxer', MinMaxScaler(copy=True, feature_range=(0, 1))), ('selection', SelectKBest(k=17, score_func=<function f_classif at 0x11220e7d0>)), ('classifier', LogisticRegression(C=0.1, class_weight='balanced', dual=False,
+          fit_intercept=True, intercept_scaling=1, max_iter=100,
+          multi_class='ovr', n_jobs=1, penalty='l2', random_state=None,
+          solver='liblinear', tol=0.0001, verbose=0, warm_start=False))])
+	Accuracy: 0.69853	Precision: 0.26386	Recall: 0.70450	F1: 0.38392	F2: 0.52811
+	Total predictions: 15000	True positives: 1409	False positives: 3931	False negatives:  591	True negatives: 9069
+

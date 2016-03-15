@@ -1,0 +1,53 @@
+
+Time to fit: 0:01:01.062197
+
+Best parameters set:
+{'classifier__class_weight': 'balanced', 'selection__k': 'all', 'classifier__C': 0.01}
+
+Grid score:
+0.402 for {'classifier__class_weight': 'balanced', 'selection__k': 10, 'classifier__C': 1e-05}
+0.475 for {'classifier__class_weight': 'balanced', 'selection__k': 12, 'classifier__C': 1e-05}
+0.507 for {'classifier__class_weight': 'balanced', 'selection__k': 17, 'classifier__C': 1e-05}
+0.506 for {'classifier__class_weight': 'balanced', 'selection__k': 'all', 'classifier__C': 1e-05}
+0.387 for {'classifier__class_weight': 'balanced', 'selection__k': 10, 'classifier__C': 0.01}
+0.453 for {'classifier__class_weight': 'balanced', 'selection__k': 12, 'classifier__C': 0.01}
+0.516 for {'classifier__class_weight': 'balanced', 'selection__k': 17, 'classifier__C': 0.01}
+0.558 for {'classifier__class_weight': 'balanced', 'selection__k': 'all', 'classifier__C': 0.01}
+0.360 for {'classifier__class_weight': 'balanced', 'selection__k': 10, 'classifier__C': 0.1}
+0.384 for {'classifier__class_weight': 'balanced', 'selection__k': 12, 'classifier__C': 0.1}
+0.447 for {'classifier__class_weight': 'balanced', 'selection__k': 17, 'classifier__C': 0.1}
+0.445 for {'classifier__class_weight': 'balanced', 'selection__k': 'all', 'classifier__C': 0.1}
+0.354 for {'classifier__class_weight': 'balanced', 'selection__k': 10, 'classifier__C': 1}
+0.366 for {'classifier__class_weight': 'balanced', 'selection__k': 12, 'classifier__C': 1}
+0.414 for {'classifier__class_weight': 'balanced', 'selection__k': 17, 'classifier__C': 1}
+0.408 for {'classifier__class_weight': 'balanced', 'selection__k': 'all', 'classifier__C': 1}
+
+Scored features: 19 selected
+                      Feature      Score Selected
+1           total_stock_value  22.782108     True
+2     exercised_stock_options  22.610531     True
+3                       bonus  21.060002     True
+4                      salary  18.575703     True
+5             deferred_income  11.561888     True
+6         long_term_incentive  10.072455     True
+7              total_payments   9.380237     True
+8            restricted_stock   8.964964     True
+9     shared_receipt_with_poi   8.746486     True
+10              loan_advances   7.242730     True
+11                   expenses   5.550684     True
+12    from_poi_to_this_person   5.344942     True
+13                      other   4.219888     True
+14    from_this_person_to_poi   2.426508     True
+15              director_fees   2.112762     True
+16                to_messages   1.698824     True
+17  restricted_stock_deferred   0.743493     True
+18          deferral_payments   0.221214     True
+19              from_messages   0.164164     True
+
+Pipeline(steps=[('minmaxer', MinMaxScaler(copy=True, feature_range=(0, 1))), ('selection', SelectKBest(k='all', score_func=<function f_classif at 0x112ae87d0>)), ('classifier', LogisticRegression(C=0.01, class_weight='balanced', dual=False,
+          fit_intercept=True, intercept_scaling=1, max_iter=100,
+          multi_class='ovr', n_jobs=1, penalty='l2', random_state=None,
+          solver='liblinear', tol=0.0001, verbose=0, warm_start=False))])
+	Accuracy: 0.74807	Precision: 0.30515	Recall: 0.69650	F1: 0.42437	F2: 0.55432
+	Total predictions: 15000	True positives: 1393	False positives: 3172	False negatives:  607	True negatives: 9828
+
