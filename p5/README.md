@@ -217,10 +217,10 @@ really only interested in records that have both precision and recall
 equal to or higher than `0.3` threshold specified in project
 requirements. That's only 2 records:
 
- #|    Subset | Classifier | Accuracy | Precision | Recall |      F1 |      F2
---|-----------|------------|----------|-----------|--------|---------|--------
-1 | no-totals | gaussiannb |  0.83047 |   0.34565 | 0.3040 | 0.32349 | 0.31151
-2 |      none |     logreg |  0.74807 |   0.30515 | 0.6965 | 0.42437 | 0.55432
+ # |    Subset | Classifier | Accuracy | Precision | Recall |      F1 |      F2
+---|-----------|------------|----------|-----------|--------|---------|--------
+1  | no-totals | gaussiannb |  0.83047 |   0.34565 | 0.3040 | 0.32349 | 0.31151
+2  |      none |     logreg |  0.74807 |   0.30515 | 0.6965 | 0.42437 | 0.55432
 
 We can see that logistic regression with no additional features performed
 best in terms of recall (**0.69650**), while still satisfying
