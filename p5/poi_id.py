@@ -85,7 +85,7 @@ def evaluate_clasifier(df, extras, algo, dump=False):
         param_grid=params,
         cv=split_indices,
         n_jobs=-1,
-        scoring='f1',
+        scoring=create_scorer(),
         verbose=0)
 
     t0 = time()
