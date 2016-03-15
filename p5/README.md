@@ -245,10 +245,10 @@ I had to look at some other students' code to help me understand and
 implement this project. From the Machine Learning class only, I was not
 able to fully understand Pipelines and GridSearchCV. Repositories:
 
-http://fch808.github.io/Identifying_Fraud_at_Enron.html
-https://jaycode.github.io/enron/identifying-fraud-from-enron-email.html
-https://github.com/allanbreyes/udacity-data-science/blob/master/p4/README.md
-https://github.com/yielder/identifying-fraud-from-enron-email
+* http://fch808.github.io/Identifying_Fraud_at_Enron.html
+* https://jaycode.github.io/enron/identifying-fraud-from-enron-email.html
+* https://github.com/allanbreyes/udacity-data-science/blob/master/p4/README.md
+* https://github.com/yielder/identifying-fraud-from-enron-email
 
 I also used `sklearn` extensive online documentation:
 
