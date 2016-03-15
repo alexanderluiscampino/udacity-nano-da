@@ -290,7 +290,7 @@ In the beginning, I used a built-in `f1` scorer. But the F1 scorer is too
 objective. When calculating F1, both precision and recall are equally
 important, so a combination of great recall (say 0.95) and below-the-threshold
 precision (say 0.28) will score better - F1 of 0.4325 - than a combination
-of an ok recall (0.6) and satisfactory precision (0.3) which results
+of an ok recall (0.6) and satisfactory precision (0.31) which results
 in F1 of 0.4088. But I want to pick the second combination anyway, because
 the first one won't satisfy the project requirements. So I had to think of
 a way to add "bias" to the scorer.
