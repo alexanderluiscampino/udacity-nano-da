@@ -165,7 +165,9 @@ if __name__ == '__main__':
         print mds
         print ''
         print 'Metrics with precision and recall equal to or above 0.3:\n'
-        print mds[(mds['Precision'] >= 0.3) & (mds['Recall'] >= 0.3)]
+        mpr = mds[(mds['Precision'] >= 0.3) & (mds['Recall'] >= 0.3)]
+        mpr.index = range(1, len(mpr) + 1)
+        print mpr
         print ''
     else:
         # Just dump the best pre-selected classifier
