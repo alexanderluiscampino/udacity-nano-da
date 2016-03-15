@@ -337,9 +337,9 @@ To compare, here are the metrics I collected when using the F1 scorer:
 
 When I filter those to only metrics equal to or above threshold, here is what I have:
 
-  |    Subset | Classifier | Accuracy | Precision | Recall |      F1 |      F2
---|-----------|------------|----------|-----------|--------|---------|--------
-1 | no-totals | gaussiannb |  0.83047 |   0.34565 |  0.304 | 0.32349 | 0.31151
+  # |    Subset | Classifier | Accuracy | Precision | Recall |      F1 |      F2
+----|-----------|------------|----------|-----------|--------|---------|--------
+1   | no-totals | gaussiannb |  0.83047 |   0.34565 |  0.304 | 0.32349 | 0.31151
 
 Only one combination satisfies the requirement: `GaussianNB` classifier and 
 a subset of features with totals removed (`total_payments` and 
