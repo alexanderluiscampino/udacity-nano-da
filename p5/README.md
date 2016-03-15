@@ -139,18 +139,6 @@ choose from to `GridSearchCV`. One major danger here can be overfitting.
 It happens very often that parameters are selected so that predictions
 on training data perform great, and on testing data not so much.
 
-> What is validation, and what’s a classic mistake you can make if 
-> you do it wrong? How did you validate your analysis?
-
-Validation means fitting your model on training set, but then verifying it
-on a different data - a test set. If you do it wrong, you end up with
-an overfitted model, i.e. one that performs very well on the data you
-trained it with, and then fails to perform on any new data.
-
-In this project, `StratifiedShuffleSplit` was used to split the data
-and select the parameters that perform the best out of 1000 such
-splits.
-
 We are using precision and recall here to measure performance. Formulas:
 
 ```
@@ -259,6 +247,52 @@ Total stock value seems to be the most important feature, followed by
 exercised_stock_options, bonus and salary. Email features are not high
 on the list, but they were included in the set anyway. Only deferral
 payments and from_messages were not included by `GridSearchCV`.
+
+## Validation and cross-validation 
+
+> What is validation, and what’s a classic mistake you can make if 
+> you do it wrong? How did you validate your analysis?
+
+Validation means fitting your model on training set, but then verifying it
+on a different data - a test set. If you do it wrong, you end up with
+an overfitted model, i.e. one that performs very well on the data you
+trained it with, and then fails to perform on any new data.
+
+The simplest way would be to set apart some records from our
+data set, and not use them in training. Instead, those records would
+be only used for testing. There's a helper method in `scikit-learn`
+called `cross_validation.train_test_split` that does just that. It is 
+also possible to overfit the model to the test set, and to avoid that,
+the data can be split even further into three sets: training set to 
+fit the model, test set to do a first evaluation pass, and validation
+set to do a final evaluation pass.
+
+However, when we already have too few data points, removing some
+of our data that we could learn from can be harmful for the model. Here,
+cross-validation enters the scene. Cross-validation means that the
+dataset is randomly split into `k` smaller sets. `k - 1` sets are used for
+training, and the last one for validation, and the procedure is repeated
+`k` times. This is called **k-fold CV**.
+
+In `scikit-learn`, several implementations are available, namely:
+
+* `StratifiedKFold` is a variation of k-fold which returns stratified 
+folds: each set contains approximately the same percentage of samples 
+of each target class as the complete set.
+
+* `ShuffleSplit` will generate a user defined number of independent train
+/ test dataset splits. Samples are first shuffled and then split 
+into a pair of train and test sets.
+
+* `StratifiedShuffleSplit` is a variation of ShuffleSplit, which returns 
+stratified splits, i.e which creates splits by preserving the same 
+percentage for each target class as in the complete set.
+
+In this project, `StratifiedShuffleSplit` was used to split the data
+and select the parameters that perform the best out of 1000 such
+splits. This is what `tester.py` uses as well. Stratification is necessary
+here since we have much less POIs than non-POIs, and we don't want to
+train on a set that only includes members of one class by accident.
 
 ## Scoring the grid search
 
