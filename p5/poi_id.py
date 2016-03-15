@@ -3,12 +3,11 @@
 POI identifier script.
 
 Usage:
-  poi_id.py [-s]
+  poi_id.py [-s|--search]
 
--s --search  search for parameters
+-s, --search  search for parameters
+-r, --report  parse metrics out of logs and display them
 """
-
-import os
 import sys
 import pickle
 import warnings
@@ -18,13 +17,14 @@ import datetime as dt
 
 from sklearn.cross_validation import StratifiedShuffleSplit
 from sklearn.grid_search import GridSearchCV
-from docopt import docopt
 
 from time import time
 from tester import test_classifier, dump_classifier_and_data
 from poi_dataset import fix_broken_records, clean_df, create_features, \
     features_split_df, features_combine_df
 from poi_algo import Algo, ExtraFeatures, create_pipeline, create_scorer
+from poi_utils import init_logfile, close_logfile, subset_name, algo_name, \
+    retrieve_all_metrics_df
 
 ### Task 1: Select what features you'll use.
 ### features_list is a list of strings, each of which is a feature name.
@@ -42,51 +42,6 @@ data_dict.pop('TOTAL', 0)
 
 df = pd.DataFrame.from_dict(data_dict, orient='index')
 df = clean_df(df)
-
-
-def subset_name(extras):
-    subdir = {
-        ExtraFeatures.ALL: 'all',
-        ExtraFeatures.ALL_TOTALS: 'all-totals',
-        ExtraFeatures.FINANCE_TOTALS: 'finance-totals',
-        ExtraFeatures.EMAIL_TOTALS: 'email-totals',
-        ExtraFeatures.EMAIL_RATIOS: 'email-ratios',
-        ExtraFeatures.NONE: 'none',
-        ExtraFeatures.NO_TOTALS: 'no-totals',
-    }
-    return subdir[extras]
-
-
-def algo_name(algo):
-    name = {
-        Algo.LOG_REG: 'logreg',
-        Algo.LINEAR_SVC: 'linsvc',
-        Algo.SVC: 'svc',
-        Algo.K_MEANS: 'kmeans',
-        Algo.GAUSSIAN_NB: 'gaussiannb'
-    }
-    return name[algo]
-
-
-def init_logfile(extras, algo):
-    """Create log file at ./output/{subname}/{algoname}.log."""
-    subname = subset_name(extras)
-    algoname = algo_name(algo)
-    logdir = os.path.join('./output', subname)
-    logname = os.path.join('./output', subname, algoname + '.log')
-    if not os.path.exists(logdir):
-        os.mkdir(logdir)
-    elif os.path.exists(logname):
-        os.unlink(logname)
-    orig_stdout = sys.stdout
-    current_file = open(logname, 'a')
-    sys.stdout = current_file
-    return orig_stdout, current_file
-
-
-def close_logfile(orig_stdout, current_file):
-    sys.stdout = orig_stdout
-    current_file.close()
 
 
 def evaluate_clasifier(df, extras, algo, dump=False):
@@ -119,12 +74,6 @@ def evaluate_clasifier(df, extras, algo, dump=False):
 
     features_list = ['poi'] + dfx.columns.values.tolist()
 
-    # best_features = k_best_features(dfx, dfy, k=12)
-    #
-    # print 'Features sorted by score:'
-    # print best_features
-    # # exit(0)
-    #
     pipeline, params = create_pipeline(
         algo,
         extras,
@@ -136,10 +85,8 @@ def evaluate_clasifier(df, extras, algo, dump=False):
         param_grid=params,
         cv=split_indices,
         n_jobs=-1,
-        scoring=create_scorer(),
+        scoring='f1',
         verbose=0)
-
-    # dfx = dfx[best_features.index.tolist()]
 
     t0 = time()
     with warnings.catch_warnings():
@@ -195,20 +142,31 @@ def evaluate_clasifier(df, extras, algo, dump=False):
             close_logfile(orig_stdout, logfile)
 
 if __name__ == '__main__':
-    args = docopt(__doc__)
+    cmd = sys.argv[1] if len(sys.argv) > 1 else None
 
-    if args['--search']:
+    if cmd in ['-s', '--search']:
         # Search all possible classifiers and their parameters and output
         # results to log files
         t0 = time()
         for extras in ExtraFeatures.all_values():
             subname = subset_name(extras)
-            for algo in [Algo.GAUSSIAN_NB]:
+            for algo in Algo.all_values():
                 algoname = algo_name(algo)
                 print 'Features: {}, evaluating {}'.format(subname, algoname)
                 evaluate_clasifier(df, extras, algo, dump=False)
 
         print '\nTotal time {:0>8}\n'.format(dt.timedelta(seconds=(time() - t0)))
+    elif cmd in ['-r', '--report']:
+        log_root = sys.argv[2] if len(sys.argv) > 2 else None
+        mdf = retrieve_all_metrics_df(log_root)
+        print 'Metrics sorted by precision and recall:\n'
+        mds = mdf.sort_values(by=['Precision', 'Recall'], ascending=False)
+        mds.index = range(1, len(mds) + 1)
+        print mds
+        print ''
+        print 'Metrics with precision and recall equal to or above 0.3:\n'
+        print mds[(mds['Precision'] >= 0.3) & (mds['Recall'] >= 0.3)]
+        print ''
     else:
         # Just dump the best pre-selected classifier
         extras = ExtraFeatures.NONE
