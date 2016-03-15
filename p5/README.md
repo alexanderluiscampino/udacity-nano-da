@@ -207,7 +207,7 @@ payments and from_messages were not included by `GridSearchCV`.
 
 ## Scoring the grid search
 
-This was challenging, because we can usually ask `GridSearchCV` to
+I struggled with this part for a long time. We can usually ask `GridSearchCV` to
 optimize for one of the metrics: either precision or recall. But we have
 a requirement in this project that both should be at least `0.3`. To solve
 this, I added a custom scorer in `poi_id.py`:
