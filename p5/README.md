@@ -40,7 +40,7 @@ immunity.
     * email_address : 24% empty
     * from_poi_to_this_person : 41% empty
     
-We have 20 impot features, out of which some are financial and some
+We have 20 input features, out of which some are financial and some
 are email-related:
 
  Payments (10)      |     Stock (4)             | Email-related features (6)
