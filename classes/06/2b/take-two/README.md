@@ -4,6 +4,10 @@ This is a redesign of the following graphic from **viz.wtf**:
 
 http://viz.wtf/post/141849303856/the-problem-is-bigger-than-you-see
 
+Screenshot:
+
+![Original](d3-high-school-sports-original.png "High school sports injuries chart")
+
 Problems with this graphic:
 
 * Misleading title. 
@@ -19,7 +23,7 @@ Problems with this graphic:
 
 Screenshot:
 
-![alt text](d3-high-school-sports.png "High school sports injuries chart")
+![Take 2](d3-high-school-sports.png "High school sports injuries chart")
 
 Source:
 
