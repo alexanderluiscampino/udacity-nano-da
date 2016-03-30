@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+
+    <script type="text/javascript">
+      function draw(data) {
+
+          "use strict";
+
+          d3.select('body')
+              .append("h2")
+              .text("High school sports injuries by type")
+              .style("font-family", "sans-serif");
+
+          var width = 600,
+              height = 450;
+
+          var svg = d3.select("body")
+            .append("svg")
+              .attr("width", width)
+              .attr("height", height)
+            .append('g')
+                .attr('class','chart');
+
+          var myChart = new dimple.chart(svg, data);
+          myChart.setBounds(100, 30, 505, 305);
+
+          var x = myChart.addMeasureAxis("x", "% annually");
+          var y = myChart.addCategoryAxis("y", "Type of injury");
+          var s1 = myChart.addSeries('Important', dimple.plot.bar);
+
+          myChart.assignColor(1, '#FB8072');
+          myChart.assignColor(0, '#80B1D3');
+
+          s1.afterDraw = function(sh, data) {
+              // Get the shape as a d3 selection
+              var shape = d3.select(sh);
+              var x = parseFloat(shape.attr('x'));
+              var y = parseFloat(shape.attr('y'));
+              var w = parseFloat(shape.attr('width'));
+              var h = parseFloat(shape.attr('height'));
+
+              svg.append('text')
+                .attr('y', y + h / 2 + 8)
+                .attr('x', x + w / 2)
+                .style("font-family", "sans-serif")
+                .style('fill', '#fff')
+                .style('font-size', '20px')
+                .style('font-weight', 'bold')
+                .style("text-anchor", "middle")
+                .text(d3.format('d')(data.xValue) + "%");
+          };
+
+          myChart.draw();
+
+        };
+      </script>
+  </head>
+<body>
+  <script type="text/javascript">
+      data = [
+          {'% annually': 44, 'Type of injury': 'High school football', 'Important': 1},
+          {'% annually': 16, 'Type of injury': 'Girls soccer', 'Important': 0},
+          {'% annually': 10, 'Type of injury': 'Boys soccer', 'Important': 0},
+          {'% annually': 6, 'Type of injury': 'Boys wrestling', 'Important': 0},
+          {'% annually': 6, 'Type of injury': 'Girls basketball', 'Important': 0}
+      ];
+      draw(data);
+  </script>
+</body>
+</html>
