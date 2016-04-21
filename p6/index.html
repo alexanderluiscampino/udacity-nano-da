@@ -14,9 +14,11 @@
 		myChart.setMargins("50px", "50px", "50px", "100px");
 		var x = myChart.addCategoryAxis("x", ["Pclass", "Sex"]);
 		var y = myChart.addCategoryAxis("y", ["Age group"]);
-        var p = myChart.addMeasureAxis("p", "Count");
-		var s = myChart.addSeries(["Survived"], dimple.plot.pie);
-        s.radius = 45;
+        //var p = myChart.addMeasureAxis("p", "Count");
+		//var s = myChart.addSeries(["Survived"], dimple.plot.pie);
+        //s.radius = 45;
+        var z = myChart.addMeasureAxis("z", "Count");
+        var s = myChart.addSeries(["Survived"], dimple.plot.bubble);
         x.showGridlines = true;
         x.addOrderRule(['1', '2', '3']);
         x.addGroupOrderRule(['male', 'female']);
@@ -88,7 +90,7 @@
 
       if (d['Age']) {
           if (d['Age'] < 19) {
-              d['AgeGroup'] = '0-18';
+              d['AgeGroup'] = '0 - 18';
           }
           else if (d['Age'] < 50) {
               d['AgeGroup'] = '19 - 49';
