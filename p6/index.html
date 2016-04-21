@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://dimplejs.org/dist/dimple.v2.2.0.min.js"></script>
+    
+    <script type="text/javascript">
+
+    function draw(data) {
+        "use strict";
+      	var svg = dimple.newSvg("#chart_container", 1000, 600);
+		var myChart = new dimple.chart(svg, data);
+		myChart.setMargins("50px", "50px", "50px", "100px");
+		var x = myChart.addCategoryAxis("x", ["Pclass", "Sex"]);
+		var y = myChart.addCategoryAxis("y", ["Age group"]);
+        var p = myChart.addMeasureAxis("p", "Count");
+		var s = myChart.addSeries(["Survived"], dimple.plot.pie);
+        s.radius = 45;
+        x.showGridlines = true;
+        x.addOrderRule(['1', '2', '3']);
+        x.addGroupOrderRule(['male', 'female']);
+        x.title = 'Passenger class (male vs female)';
+		myChart.addLegend(240, 10, 330, 20, "right");
+		myChart.draw();
+
+        x.shapes
+            .selectAll("text")
+            .text(function (d) {
+                var suffix = {'1': 'st', '2': 'nd', '3': 'rd'};
+                return '' + d + suffix[d] + ' class';
+            });
+    }
+
+    </script>
+
+      <style>
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+      </style>
+
+      </head>
+  </head>
+<body>
+  <script type="text/javascript">
+
+  var display_data = function(data) {
+      var grouped = d3.nest()
+	  	.key(function(x) { return x['Pclass'];})
+	  	.key(function(x) { return x['Sex'];})
+	  	.key(function(x) { return x['AgeGroup'];})
+	  	.key(function(x) { return x['Survived'];})
+	    .rollup(function(xs) { return xs.length; })
+	    .entries(data);
+
+	  var flattened = [];
+
+	  grouped.forEach(function(pclass) {
+		  pclass.values.forEach(function (sex) {
+			  sex.values.forEach(function (ageGroup) {
+				 ageGroup.values.forEach(function (survived) {
+					flattened.push({
+                        'Pclass': pclass.key,
+                        'Sex': sex.key,
+                        'Age group': ageGroup.key,
+                        'Survived': survived.key,
+                        'Count': survived.values
+                    });
+				 });
+			  });
+		  });
+	  });
+      draw(flattened);
+  };
+
+  var transform_data = function(d) {
+      d['PassengerId'] = +d['PassengerId'];
+      d['Survived'] = +d['Survived'];
+      d['Age'] = +d['Age'];
+
+      if (d['Survived'] == 1) {
+          d['Survived'] = 'Survived';
+      }
+      else if (d['Survived'] == 0) {
+          d['Survived'] = 'Died';
+      }
+
+      if (d['Age']) {
+          if (d['Age'] < 19) {
+              d['AgeGroup'] = '0-18';
+          }
+          else if (d['Age'] < 50) {
+              d['AgeGroup'] = '19 - 49';
+          }
+          else {
+              d['AgeGroup'] = '50+';
+          }
+      }
+      else {
+          d['AgeGroup'] = 'Unknown';
+      }
+      return d;
+  };
+
+  d3.csv("titanic_passengers.csv", transform_data, display_data);
+  
+  </script>
+</body>
+  <h2>Titanic passengers: survival by class, sex and age</h2>
+  <div id="chart_container"></div>
+</html>
