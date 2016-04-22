@@ -14,17 +14,54 @@
 		myChart.setMargins("50px", "50px", "50px", "100px");
 		var x = myChart.addCategoryAxis("x", ["Pclass", "Sex"]);
 		var y = myChart.addCategoryAxis("y", ["Age group"]);
-        //var p = myChart.addMeasureAxis("p", "Count");
-		//var s = myChart.addSeries(["Survived"], dimple.plot.pie);
-        //s.radius = 45;
-        var z = myChart.addMeasureAxis("z", "Count");
-        var s = myChart.addSeries(["Survived"], dimple.plot.bubble);
+        var p = myChart.addMeasureAxis("p", "Count");
+		var s = myChart.addSeries(["Sex", "Survived"], dimple.plot.pie);
+//        var z = myChart.addMeasureAxis("z", "Count");
+//        var s = myChart.addSeries(["Survived"], dimple.plot.bubble);
+        s.radius = 45;
         x.showGridlines = true;
         x.addOrderRule(['1', '2', '3']);
         x.addGroupOrderRule(['male', 'female']);
         x.title = 'Passenger class (male vs female)';
-		myChart.addLegend(240, 10, 330, 20, "right");
 		myChart.draw();
+
+        var legend = svg.append("g")
+          .attr("class", "legend")
+          .attr("transform", "translate(400, 0)")
+          .selectAll("g")
+          .data(["Survived / male", "Died / male", "Survived / female", "Died / female"])
+          .enter().append("g");
+
+        legend.append("rect")
+          .attr('x', function(d, i) {
+              return (d.indexOf('/ male') > -1) ? 0 : 120;
+          })
+          .attr("y", function(d, i) {
+              return (d.indexOf('Survived') > -1) ? 0 : 12;
+          })
+          .attr("width", 15)
+          .attr("height", 9)
+          .attr("fill", function(d) {
+              var colorMap = {
+                  "Survived / male": '#cce6ff',
+                  "Died / male": '#004280',
+                  "Survived / female": '#ffcccc',
+                  "Died / female": '#b30000'
+              };
+              return colorMap[d];
+          });
+
+        legend.append("text")
+          .attr("y", function(d, i) {
+              return (d.indexOf('Survived') > -1) ? 8 : 20;
+          })
+          .attr("x", function(d, i) {
+              return (d.indexOf('/ male') > -1) ? 20 : 140;
+          })
+          .attr('style', 'font-family: sans-serif; font-size: 10px;')
+          .text(function(d) {
+              return d;
+          });
 
         x.shapes
             .selectAll("text")
@@ -39,6 +76,22 @@
       <style>
         body {
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+        .dimple-died.dimple-male {
+           fill: #004280 !important;
+           stroke: #00284d !important;
+        }
+        .dimple-survived.dimple-male {
+            fill: #cce6ff !important;
+            stroke: #99ccff !important;
+        }
+        .dimple-died.dimple-female {
+           fill: #b30000 !important;
+           stroke: #800000 !important;
+        }
+        .dimple-survived.dimple-female {
+            fill: #ffcccc !important;
+            stroke: #ff9999 !important;
         }
       </style>
 

@@ -11,7 +11,8 @@ class.
 
 On Y axis, we have the age group.
 
-Survivors are plotted in red, and the ones who didn't make it in blue.
+Survivors are plotted in lighter color, and the ones who didn't make it
+in darker color. Blue for males, red for females.
 
 # Design
 
@@ -39,11 +40,19 @@ easy to see ratio of survival in each group.
 After that, I chose pie chart to display the groups, and gave them all a
 fixed size. This way, it's easier to see which groups were the luckiest.
 
-![Original chart](titanic-1.png "Survival on Titanic")
+## Version 1
 
-# Feedback
+![Original chart](titanic-1.png "Survival on Titanic, v1")
 
-TODO
+# Feedback on version 1
+
+* Red associated with "good" and blue with "bad" is counter-intuitive.
+* It took a while to spot that there are two columns of pies in
+  each passenger class to represent males and females.
+
+## Version 2
+
+![Version 2](titanic-2.png "Survival on Titanic, v2")
 
 #  Resources
 
