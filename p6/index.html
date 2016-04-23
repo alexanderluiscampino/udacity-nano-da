@@ -83,14 +83,42 @@
         /**
          * Format passenger classes 1, 2, 3 as
          * 1st class, 2nd class, 3rd class.
+         * Also add additional marks for male and female on X axis.
          **/
         function formatXTicks(x) {
+            // Add suffixes to 1, 2 and 3
             x.shapes
                 .selectAll("text")
                 .text(function (d) {
                     var suffix = {'1': 'st', '2': 'nd', '3': 'rd'};
                     return '' + d + suffix[d] + ' class';
                 });
+
+            // Add "male" column labels
+            x.shapes
+                .selectAll("g")
+                .append('text')
+                .attr('x', function(d, i) {
+                    return 80;
+                }).
+                attr('y', function(d, i) {
+                    return 9;
+                })
+                .attr('style', 'font-family: sans-serif; font-size: 10px;')
+                .text('Male');
+
+            // Add "female" column labels
+            x.shapes
+                .selectAll("g")
+                .append('text')
+                .attr('x', function(d, i) {
+                    return 200;
+                }).
+                attr('y', function(d, i) {
+                    return 9;
+                })
+                .attr('style', 'font-family: sans-serif; font-size: 10px;')
+                .text('Female');
         }
 
         /**

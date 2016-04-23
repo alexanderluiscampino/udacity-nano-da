@@ -1,6 +1,7 @@
 # Summary
 
-Here is the the [interactive version](http://bl.ocks.org/j-bennet/raw/219cf6b3cebc5b93a310308c64231cc6/).
+Here is the the [interactive version](http://bl.ocks.org/j-bennet/raw/219cf6b3cebc5b93a310308c64231cc6/)
+with tooltips that have additional information about chart elements.
 
 This visualization shows survival on Titanic, depending on three factors:
  
@@ -50,7 +51,9 @@ fixed size. This way, it's easier to see which groups were the luckiest.
 
 * Red associated with "good" and blue with "bad" is counter-intuitive.
 * It took a while to spot that there are two columns of pies in
-  each passenger class to represent males and females.
+  each passenger class to represent males and females. Maybe adding
+  different border colors like Pink vs Blue or adding an icon next to
+  the pie charts could help.
 
 ## Version 2
 
@@ -65,6 +68,41 @@ fixed size. This way, it's easier to see which groups were the luckiest.
   only contains one person, so it is not really representative.
 
 ![Version 3](titanic-3.png "Survival on Titanic, v3")
+
+# Feedback on version 3
+
+* Chart colors can confuse the reader, at the first sight, it looks like 
+  blue is survived and red is not survived, however, it is just 
+  male/female categories. My suggestion is to use the same coloring 
+  for male/female (as in the first version) but add additional signs
+  in the X-axis about gender.
+* Numbers inside chart - the formatting looks a bit strange, so I 
+  would suggest removing them, the viewer can explore them inside
+  tooltips.
+  
+# Version 4
+
+For version 4, please use the [interactive version](http://bl.ocks.org/j-bennet/raw/219cf6b3cebc5b93a310308c64231cc6/)
+that has tooltips when you hover over elements.
+
+I decided to act upon the suggestion of removing the numbers, but not to
+take the suggestion of reverting back to same colors for male/female.
+I think that as this has been a matter of some opinions (first reviewer
+suggested using different colors to differentiate between sexes), there
+will be people liking v1 and people liking v2. Personally I think that
+blue / pink is a common characteristic to male/female.
+
+I also implemented a suggestion of adding marks for male/female to X axis,
+so they serve as an addition to male/female colors and hopefully prevent the
+confusion.
+
+# Visualizaion takeaways
+
+* Chances of survival are highest in the 1st class and worst in 3rd class.
+* Throughout all the classes and age groups, female survival is higher than male.
+* Chances of survival also drop with age, which is consistent in all classes
+  and sexes, except females over 50 in 3rd class. But then, that group only
+  consists of one person and is not therefore a good representation.
 
 #  Resources
 
