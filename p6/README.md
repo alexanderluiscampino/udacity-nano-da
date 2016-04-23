@@ -1,5 +1,7 @@
 # Summary
 
+Here is the the [interactive version](http://bl.ocks.org/j-bennet/219cf6b3cebc5b93a310308c64231cc6).
+
 This visualization shows survival on Titanic, depending on three factors:
  
 * Passenger class

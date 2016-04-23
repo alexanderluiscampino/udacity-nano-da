@@ -1,183 +1,273 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="http://dimplejs.org/dist/dimple.v2.2.0.min.js"></script>
-    
+
     <script type="text/javascript">
 
-    function draw(data) {
-        "use strict";
-      	var svg = dimple.newSvg("#chart_container", 1000, 600);
-		var myChart = new dimple.chart(svg, data);
-		myChart.setMargins("50px", "50px", "50px", "100px");
-		var x = myChart.addCategoryAxis("x", ["Pclass", "Sex"]);
-		var y = myChart.addCategoryAxis("y", ["Age group"]);
-        var p = myChart.addMeasureAxis("p", "Count");
-		var s = myChart.addSeries(["Sex", "Survived"], dimple.plot.pie);
-        s.radius = 45;
-        x.showGridlines = true;
-        x.addOrderRule(['1', '2', '3']);
-        x.addGroupOrderRule(['male', 'female']);
-        x.title = 'Passenger class (male vs female)';
+        /**
+         * Add labels to showing absolute counts of each group
+         * on pie slice.
+         *
+         * @param s series
+         * @param svg svg container
+         */
+        function addPieLabels(s, svg) {
+            s.afterDraw = function (shape, data) {
+                var ctm = shape.getCTM();
+                var srect = shape.getBBox();
+                var cx = ctm.e + srect.x + srect.width / 2;
+                var cy = ctm.f + srect.y + srect.height / 2;
 
-        s.afterDraw = function (shape, data) {
-            var ctm = shape.getCTM();
-            var srect = shape.getBBox();
-            var cx = ctm.e + srect.x + srect.width / 2;
-            var cy = ctm.f + srect.y + srect.height / 2;
-            //append label
-            svg.append("text")
-                    .attr("x", cx - 3)
-                    .attr("y", cy + 10)
-                    .style("font-size", "20px")
-                    .style("font-weight", "bold")
-                    .style("font-family", "sans-serif")
-                    .style("text-anchor", "start")
-                    .style("fill", "black")
-                    .text(data.pValue);
-        };
+                //append label
+                svg.append("text")
+                        .attr("x", cx - 3)
+                        .attr("y", cy + 10)
+                        .style("font-size", "20px")
+                        .style("font-weight", "bold")
+                        .style("font-family", "sans-serif")
+                        .style("text-anchor", "start")
+                        .style("fill", "black")
+                        .text(data.pValue);
+            };
+        }
 
-		myChart.draw();
+        /**
+         * Create and add chart legend using d3.
+         * We want to display 4 colors in 2 columns:
+         *     Survived / Male    Survived / female
+         *     Died / Male        Died / female
+         **/
+        function addLegend(svg) {
+            var legend = svg.append("g")
+                    .attr("class", "legend")
+                    .attr("transform", "translate(400, 0)")
+                    .selectAll("g")
+                    .data(["Survived / male", "Died / male", "Survived / female", "Died / female"])
+                    .enter().append("g");
 
-        var legend = svg.append("g")
-          .attr("class", "legend")
-          .attr("transform", "translate(400, 0)")
-          .selectAll("g")
-          .data(["Survived / male", "Died / male", "Survived / female", "Died / female"])
-          .enter().append("g");
+            legend.append("rect")
+                    .attr('x', function (d, i) {
+                        return (d.indexOf('/ male') > -1) ? 0 : 120;
+                    })
+                    .attr("y", function (d, i) {
+                        return (d.indexOf('Survived') > -1) ? 0 : 12;
+                    })
+                    .attr("width", 15)
+                    .attr("height", 9)
+                    .attr("fill", function (d) {
+                        var colorMap = {
+                            "Survived / male": '#cce6ff',
+                            "Died / male": '#004280',
+                            "Survived / female": '#ffcccc',
+                            "Died / female": '#b30000'
+                        };
+                        return colorMap[d];
+                    });
 
-        legend.append("rect")
-          .attr('x', function(d, i) {
-              return (d.indexOf('/ male') > -1) ? 0 : 120;
-          })
-          .attr("y", function(d, i) {
-              return (d.indexOf('Survived') > -1) ? 0 : 12;
-          })
-          .attr("width", 15)
-          .attr("height", 9)
-          .attr("fill", function(d) {
-              var colorMap = {
-                  "Survived / male": '#cce6ff',
-                  "Died / male": '#004280',
-                  "Survived / female": '#ffcccc',
-                  "Died / female": '#b30000'
-              };
-              return colorMap[d];
-          });
+            legend.append("text")
+                    .attr("y", function (d, i) {
+                        return (d.indexOf('Survived') > -1) ? 8 : 20;
+                    })
+                    .attr("x", function (d, i) {
+                        return (d.indexOf('/ male') > -1) ? 20 : 140;
+                    })
+                    .attr('style', 'font-family: sans-serif; font-size: 10px;')
+                    .text(function (d) {
+                        return d;
+                    });
+        }
 
-        legend.append("text")
-          .attr("y", function(d, i) {
-              return (d.indexOf('Survived') > -1) ? 8 : 20;
-          })
-          .attr("x", function(d, i) {
-              return (d.indexOf('/ male') > -1) ? 20 : 140;
-          })
-          .attr('style', 'font-family: sans-serif; font-size: 10px;')
-          .text(function(d) {
-              return d;
-          });
+        /**
+         * Format passenger classes 1, 2, 3 as
+         * 1st class, 2nd class, 3rd class.
+         **/
+        function formatXTicks(x) {
+            x.shapes
+                .selectAll("text")
+                .text(function (d) {
+                    var suffix = {'1': 'st', '2': 'nd', '3': 'rd'};
+                    return '' + d + suffix[d] + ' class';
+                });
+        }
 
-        x.shapes
-            .selectAll("text")
-            .text(function (d) {
-                var suffix = {'1': 'st', '2': 'nd', '3': 'rd'};
-                return '' + d + suffix[d] + ' class';
-            });
-    }
+        /**
+         * Do all the work of creating the chart.
+         *
+         * @param data array of records
+         */
+        function draw(data) {
+            "use strict";
+
+            // Create the chart container
+            var svg = dimple.newSvg("#chart_container", 1000, 600);
+            var myChart = new dimple.chart(svg, data);
+            myChart.setMargins("50px", "50px", "50px", "100px");
+
+            // Combination of Pclass and Sex on X axis
+            var x = myChart.addCategoryAxis("x", ["Pclass", "Sex"]);
+
+            // Age group on Y axis
+            var y = myChart.addCategoryAxis("y", ["Age group"]);
+
+            // Pie slice should be sized by group count
+            var p = myChart.addMeasureAxis("p", "Count");
+
+            // Add a pie of Die / Survived for each Pclass / Sex / Age group
+            var s = myChart.addSeries(["Sex", "Survived"], dimple.plot.pie);
+
+            // Set fixed pie radius
+            s.radius = 45;
+
+            // Let's see grid lines so we can separate the classes
+            x.showGridlines = true;
+
+            // Pclass ordering left to right
+            x.addOrderRule(['1', '2', '3']);
+
+            // Male on the left, female on the right
+            x.addGroupOrderRule(['male', 'female']);
+
+            x.title = 'Passenger class (male vs female)';
+
+            // addPieLabels(s, svg);
+            myChart.draw();
+            addLegend(svg);
+            formatXTicks(x);
+        }
 
     </script>
 
-      <style>
+    <style>
         body {
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         }
+
         .dimple-died.dimple-male {
-           fill: #004280 !important;
-           stroke: #00284d !important;
+            fill: #004280 !important;
+            stroke: #00284d !important;
         }
+
         .dimple-survived.dimple-male {
             fill: #cce6ff !important;
             stroke: #99ccff !important;
         }
+
         .dimple-died.dimple-female {
-           fill: #b30000 !important;
-           stroke: #800000 !important;
+            fill: #b30000 !important;
+            stroke: #800000 !important;
         }
+
         .dimple-survived.dimple-female {
             fill: #ffcccc !important;
             stroke: #ff9999 !important;
         }
-      </style>
+    </style>
 
-      </head>
-  </head>
+</head>
+</head>
 <body>
-  <script type="text/javascript">
+<script type="text/javascript">
 
-  var display_data = function(data) {
-      var grouped = d3.nest()
-	  	.key(function(x) { return x['Pclass'];})
-	  	.key(function(x) { return x['Sex'];})
-	  	.key(function(x) { return x['AgeGroup'];})
-	  	.key(function(x) { return x['Survived'];})
-	    .rollup(function(xs) { return xs.length; })
-	    .entries(data);
+    /**
+     * Transform the initial dataset and call the draw
+     * method to create a chart. Transformations being done:
+     * - data is grouped by 4 keys:
+     *     Pclass
+     *     Sex
+     *     AgeGroup
+     *     Survived
+     * - "Count" field is added for each group
+     *
+     * @param data array of records (raw data)
+     */
+    var display_data = function (data) {
+        var grouped = d3.nest()
+                .key(function (x) {
+                    return x['Pclass'];
+                })
+                .key(function (x) {
+                    return x['Sex'];
+                })
+                .key(function (x) {
+                    return x['AgeGroup'];
+                })
+                .key(function (x) {
+                    return x['Survived'];
+                })
+                .rollup(function (xs) {
+                    return xs.length;
+                })
+                .entries(data);
 
-	  var flattened = [];
+        var flattened = [];
 
-	  grouped.forEach(function(pclass) {
-		  pclass.values.forEach(function (sex) {
-			  sex.values.forEach(function (ageGroup) {
-				 ageGroup.values.forEach(function (survived) {
-					flattened.push({
-                        'Pclass': pclass.key,
-                        'Sex': sex.key,
-                        'Age group': ageGroup.key,
-                        'Survived': survived.key,
-                        'Count': survived.values
+        grouped.forEach(function (pclass) {
+            pclass.values.forEach(function (sex) {
+                sex.values.forEach(function (ageGroup) {
+                    ageGroup.values.forEach(function (survived) {
+                        flattened.push({
+                            'Pclass': pclass.key,
+                            'Sex': sex.key,
+                            'Age group': ageGroup.key,
+                            'Survived': survived.key,
+                            'Count': survived.values
+                        });
                     });
-				 });
-			  });
-		  });
-	  });
-      draw(flattened);
-  };
+                });
+            });
+        });
+        draw(flattened);
+    };
 
-  var transform_data = function(d) {
-      d['PassengerId'] = +d['PassengerId'];
-      d['Survived'] = +d['Survived'];
-      d['Age'] = +d['Age'];
+    /**
+     * Apply transformations on each row ow data.
+     * - Age and PasengerId are converted to int
+     * - Survived "0" and "1" are replaced by "Died" or "Survived"
+     * - a new "AgeGroup" field is added. Possible values:
+     *     0 - 18
+     *     19 - 49
+     *     50+
+     *     Unknown
+     *
+     * @param d original data
+     * @returns transformed data
+     */
+    var transform_data = function (d) {
+        d['PassengerId'] = +d['PassengerId'];
+        d['Survived'] = +d['Survived'];
+        d['Age'] = +d['Age'];
 
-      if (d['Survived'] == 1) {
-          d['Survived'] = 'Survived';
-      }
-      else if (d['Survived'] == 0) {
-          d['Survived'] = 'Died';
-      }
+        if (d['Survived'] == 1) {
+            d['Survived'] = 'Survived';
+        }
+        else if (d['Survived'] == 0) {
+            d['Survived'] = 'Died';
+        }
 
-      if (d['Age']) {
-          if (d['Age'] < 19) {
-              d['AgeGroup'] = '0 - 18';
-          }
-          else if (d['Age'] < 50) {
-              d['AgeGroup'] = '19 - 49';
-          }
-          else {
-              d['AgeGroup'] = '50+';
-          }
-      }
-      else {
-          d['AgeGroup'] = 'Unknown';
-      }
-      return d;
-  };
+        if (d['Age']) {
+            if (d['Age'] < 19) {
+                d['AgeGroup'] = '0 - 18';
+            }
+            else if (d['Age'] < 50) {
+                d['AgeGroup'] = '19 - 49';
+            }
+            else {
+                d['AgeGroup'] = '50+';
+            }
+        }
+        else {
+            d['AgeGroup'] = 'Unknown';
+        }
+        return d;
+    };
 
-  d3.csv("titanic_passengers.csv", transform_data, display_data);
-  
-  </script>
+    d3.csv("titanic_passengers.csv", transform_data, display_data);
+
+</script>
 </body>
-  <h2>Titanic passengers: survival by class, sex and age</h2>
-  <div id="chart_container"></div>
+<h2>Titanic passengers: survival by class, sex and age</h2>
+<div id="chart_container"></div>
 </html>
