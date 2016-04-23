@@ -54,6 +54,16 @@ fixed size. This way, it's easier to see which groups were the luckiest.
 
 ![Version 2](titanic-2.png "Survival on Titanic, v2")
 
+# Feedback on version 2
+
+* Because you can't see absolute numbers on chart (unless you hover over),
+  it's hard to tell which groups are more representative of a tendency,
+  and which are not. For example, all females of age 50+ in third class
+  survived, which seems to go against the tendency. But then, this group
+  only contains one person, so it is not really representative.
+
+![Version 3](titanic-3.png "Survival on Titanic, v3")
+
 #  Resources
 
 * http://dimplejs.org/examples_index.html

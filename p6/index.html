@@ -16,13 +16,29 @@
 		var y = myChart.addCategoryAxis("y", ["Age group"]);
         var p = myChart.addMeasureAxis("p", "Count");
 		var s = myChart.addSeries(["Sex", "Survived"], dimple.plot.pie);
-//        var z = myChart.addMeasureAxis("z", "Count");
-//        var s = myChart.addSeries(["Survived"], dimple.plot.bubble);
         s.radius = 45;
         x.showGridlines = true;
         x.addOrderRule(['1', '2', '3']);
         x.addGroupOrderRule(['male', 'female']);
         x.title = 'Passenger class (male vs female)';
+
+        s.afterDraw = function (shape, data) {
+            var ctm = shape.getCTM();
+            var srect = shape.getBBox();
+            var cx = ctm.e + srect.x + srect.width / 2;
+            var cy = ctm.f + srect.y + srect.height / 2;
+            //append label
+            svg.append("text")
+                    .attr("x", cx - 3)
+                    .attr("y", cy + 10)
+                    .style("font-size", "20px")
+                    .style("font-weight", "bold")
+                    .style("font-family", "sans-serif")
+                    .style("text-anchor", "start")
+                    .style("fill", "black")
+                    .text(data.pValue);
+        };
+
 		myChart.draw();
 
         var legend = svg.append("g")
