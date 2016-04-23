@@ -83,7 +83,9 @@ fixed size. This way, it's easier to see which groups were the luckiest.
 # Version 4
 
 For version 4, please use the [interactive version](http://bl.ocks.org/j-bennet/raw/219cf6b3cebc5b93a310308c64231cc6/)
-that has tooltips when you hover over elements.
+that has tooltips when you hover over elements. Static snapshot is here:
+
+![Version 4](titanic-4.png "Survival on Titanic, v4")
 
 I decided to act upon the suggestion of removing the numbers, but not to
 take the suggestion of reverting back to same colors for male/female.
