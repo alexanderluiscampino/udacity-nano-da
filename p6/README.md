@@ -70,3 +70,4 @@ fixed size. This way, it's easier to see which groups were the luckiest.
 * https://github.com/mbostock/d3/wiki
 * http://stackoverflow.com/questions/25774821/dimple-js-axis-labels
 * http://www.d3noob.org/2014/02/grouping-and-summing-data-using-d3nest.html
+* http://stackoverflow.com/questions/28306308/how-to-draw-labels-on-dimple-js-donut-or-pie-chart
