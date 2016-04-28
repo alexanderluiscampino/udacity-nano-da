@@ -9,7 +9,27 @@ to select a dataset and create a graphic to represent it. The dataset
 I chose was Titanic passengers. I created the chart to show the
 relationship between passenger class, sex and age and the outcome
 (survived or died). According to my findings, females in 1st class had
-the best chance of survival, and males in 3rd class fared the worst. 
+the best chance of survival, and males in 3rd class fared the worst.
+
+To create the chart, I used dimple.js, but it ended up being not enough 
+to create some of the features that I wanted, such as custom legend
+formatting and additional axis labels. I used d3 for that.
+ 
+I selected pie chart to represent died/survived people in each
+class/sex/age group. Despite its bad reputation (see 
+http://www.perceptualedge.com/articles/08-21-07.pdf for example) I think
+that in case of only 2 categories to represent, pie charts are acceptable,
+and they look more attractive visually than stacked bars. I also chose
+to use hues of red for females survived/died, and hues of blue for 
+males survived/died, and this was a controversial choice. I had 2 people
+that said it "made the graphic more clear because genders really stood
+out" and two that said "so many colors made it hard to figure out". I
+kept going back and forth on that, but since the tastes differed 50/50,
+I went with one that looked more appealing to me.
+
+This was also an interesting project, because this data represents a real
+catastrophe, something that affected many people's lives, and it was
+so big that it's still being talked of.
 
 ### Question 2 - You are given a ten piece box of chocolate truffles.
 
@@ -19,13 +39,13 @@ four pieces in a row, what is the probability that the first two pieces
 you eat have an orange cream filling and the last two have a coconut
 filling?
 
- Ate    | Probability | Cream left | Coconut left 
+ Ate    | Probability | O left | C left 
 --------|-------------|------------|-------------
  -      |      -      | 6          | 4
- Cream  | 6/10        | 5          | 4
- Cream  | 5/9         | 4          | 4
- Coco   | 1/2         | 4          | 3
- Coco   | 3/7         | 4          | 2
+ O      | 6/10        | 5          | 4
+ O      | 5/9         | 4          | 4
+ C      | 1/2         | 4          | 3
+ C      | 3/7         | 4          | 2
  
 Total:
 
@@ -39,18 +59,69 @@ If you were given an identical box of chocolates and again eat four
 pieces in a row, what is the probability that exactly two contain 
 coconut filling?
 
-Let's code Cream as 0 and Coconut as 1. We have 6 possible
-combinations allowing us to get 2 of the 1s:
+We have 6 possible combinations allowing us to get 2 coconat truffles:
 
-1, 1, 0, 0
-0, 1, 1, 0
-0, 0, 1, 1
-1, 0, 0, 1
-1, 0, 1, 0
-0, 1, 0, 1
+C C O O
+O C C O
+O O C C
+C O O C
+C O C O
+O C O C
 
-while the number of all possible combinations is `4^2=16`. Therefore,
-we can get a 2-coconut outcome with a probability of `6/16=3/8=0.375`.
+So we can calculate the probability of all of them and add them up. 
+I wrote a piece of code to do that:
+
+```python
+import operator
+
+
+def take_one(box, truffle):
+    """
+    Calculate probability of pulling truffle of given type.
+    :param box: dict of {type: count}.
+    :return (float, box): probability and updated box.
+    """
+    total_truffles = sum(box.values())
+    prob = (0. + box[truffle]) / total_truffles
+    if box[truffle]:
+        box[truffle] -= 1
+    return prob, box
+
+
+def take_sequence(box, seq):
+    """Calculate probability of sequence of truffles.
+    :param box: dict of {type: count}.
+    :param seq: string
+    :return float
+    """
+    probs = []
+    for truffle in seq:
+        p, box = take_one(box, truffle)
+        probs.append(p)
+    return reduce(operator.mul, probs, 1)
+
+
+if __name__ == '__main__':
+    total_prob = 0
+    for seq in ['CCOO', 'OCCO', 'OOCC', 'COOC', 'COCO', 'OCOC']:
+        box = {'O': 6, 'C': 4}
+        ps = take_sequence(box, seq)
+        print '- {}: {}'.format(seq, ps)
+        total_prob += ps
+    print 'Result', total_prob
+```
+
+Here is the output:
+
+```
+- CCOO: 0.0714285714286
+- OCCO: 0.0714285714286
+- OOCC: 0.0714285714286
+- COOC: 0.0714285714286
+- COCO: 0.0714285714286
+- OCOC: 0.0714285714286
+Result 0.428571428571
+```
 
 ### Question 3 - Given the table users:
 
@@ -79,7 +150,8 @@ Example result:
 
 ```sql
 select state, count(id) as num_active_users from users
-order by count(id) desc
+group by state
+order by num_active_users desc
 limit 5
 ```
 
@@ -116,6 +188,16 @@ def first_unique(string):
 
 ```
 
+This solution is short to code and easy to understand. However,
+complexity is O(N^2), since we are doing the look-ahead through the 
+string for every letter, slightly mitigating it by the `seen` check.
+It may be more efficient to:
+
+* create a dict of `letter: (count, index)`: O(N)
+* loop through the dict and find key with count=1 and minimal index: O(N)
+
+Here, complexity would be O(2*N).
+
 ### Question 5 - What are underfitting and overfitting
 
 in the context of Machine Learning? How might you balance them?
@@ -126,7 +208,20 @@ is when the model shows good results on training set, but poor results on
 new data. Validation and cross-validation of the model are the usual ways
 to fix it.
 
-Before answering the final question, insert a job description for a data analyst position of your choice!
+Possible causes of underfitting:
+
+* model is too simple
+* not enough features
+* bad choice of parameters
+
+Possible causes of overfitting:
+
+* too few data points
+* too many features
+* data has noise
+
+Before answering the final question, insert a job description for a 
+data analyst position of your choice!
 
 Your answer for Question 6 should be targeted to the company/job-description you chose.
 
@@ -175,12 +270,25 @@ Some background in Python and/or JavaScript.
 (I got this job description from my current company jobs page, because
 right now I'm happy with my job).
 
-A year from now, I'd like to be a team member who not only knows how to
-perform the day-to-day tasks, but also has a view into the future and 
-is able to predict both what features the customers will want on the
-front-end, and what challenges we may encounter on the back-end (such as
-scaling, improving availability and fault tolerance). I want to be able
-to "put out fires", make useful suggestions as to what to do next, and
-help out younger team members. I want to learn the technical stack and
-keep it updated as requirements change. I want the company to never
-be unhappy about hiring me.
+A year from now, I'd like to:
+
+1. Be able to efficiently use Apache Spark and Apache Storm in my work.
+
+How I might achieve that:
+
+* Learn from existing code.
+* Use technical documentation.
+* Ask questions from more experienced team members.
+
+Those two systems are the foundation of our current data processing
+pipeline. We make it work, but problems still come up, and currently
+we spend about 20% of development time (1 day every week) on fixing
+customer issues that could be prevented if we increased stability and
+reliability of the system. I would call it a win if we could cut this
+time in half and only need to have a "bug day" once every two weeks.
+
+2. Become an expert in monitoring tools and create a single dashboard
+that we can use to diagnose problems arising during the daily data
+processing tasks. Use it to determine the bottlenecks and parts of the
+pipeline that have problems most often, and potentially would prevent
+us from scaling the system to support more events.
