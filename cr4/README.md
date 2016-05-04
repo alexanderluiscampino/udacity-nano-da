@@ -150,6 +150,7 @@ Example result:
 
 ```sql
 select state, count(id) as num_active_users from users
+where active = 1
 group by state
 order by num_active_users desc
 limit 5
