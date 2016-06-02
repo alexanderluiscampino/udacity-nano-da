@@ -68,6 +68,35 @@ def question2(a):
     return max_pal
 
 
+class Graph(object):
+    """
+    Graph representation.
+    Nodes is a set of all nodes.
+    Edges is a dict of:
+      node_from: set([(node_to, weight),
+                      (node_to, weight), ...])
+    """
+    def __init__(self, nodes=None, edges=None):
+        self.nodes = set(nodes) if nodes else set([])
+        self.edges = edges or {}
+
+    def has_node(self, n):
+        return n in self.nodes
+
+    def add_edge(self, n1, n2, w):
+        self.nodes.add(n1)
+        self.nodes.add(n2)
+        if n1 not in self.edges:
+            self.edges[n1] = set([])
+        self.edges[n1].add((n2, w))
+
+    def as_list(self):
+        return {
+            n: list(es)
+            for n, es in self.edges.items()
+        }
+
+
 def question3(G):
     """
     Given an undirected graph G, find the minimum spanning tree within G.
@@ -77,11 +106,37 @@ def question3(G):
     {'A':[('B',2)],'B':[('A',2),('C',5)],'C':[('B',5)]}.
     Vertices are represented as unique strings. The function definition
     should be "question3(G)"
-    :param G: graph
+    Uses Kruskal's greedy algorithm.
+    :param G: adjacency list
+    :type G: dict
     :return: adjacency list
     :rtype: dict
     """
-    pass
+    # Create a dictionary mapping every vertex to its own tree at first.
+    trees = {node: node for node in G}
+    # Sort all edges by weight.
+    edges = sorted([(w, n1, n2) for n1, es in G.iteritems() for n2, w in es])
+    mst = Graph()
+    for w, n1, n2 in edges:
+        # if n1 and n2 belong to different trees, add them to MST and combine them into same tree
+        if trees[n1] != trees[n2]:
+            trees[n2] = trees[n1]
+            mst.add_edge(n1, n2, w)
+    return mst.as_list()
+
+
+def test_q3():
+    g1 = {
+        'A': [('B', 2)],
+        'B': [('A', 2), ('C', 5)],
+        'C': [('B', 5)]
+    }
+    a1 = {
+        'A': [('B', 2)],
+        'B': [('C', 5)]
+    }
+    assert question3(g1) == a1
+    print('Q3: OK')
 
 
 def test_q1():
@@ -102,6 +157,7 @@ def test_q2():
 def main():
     test_q1()
     test_q2()
+    test_q3()
 
 
 if __name__ == '__main__':
