@@ -1,0 +1,105 @@
+Question 1.
+-----------
+
+Given two strings s and t, determine whether some anagram of
+t is a substring of s. For example: if s = “udacity” and t = “ad”,
+then the function returns True.
+
+Answer:
+-------
+
+At first, I wrote a brute-force solution, that would generate all permutations
+of t (using itertools.permutations), and check if they can be found in s. But
+afterwards I looked it up, and found out some better ways to do it. The
+brute-force complexity is O(n * m^2). I implemented an O(n) solution as
+follows:
+
+1. Calculate a hashtable of frequencies of all letters in t. If t is "ud", it is:
+   {'u': 1, 'd': 1}. Complexity of this operation is O(1) because it is a
+   fixed-length table.
+2. Calculate the similar hashtable for the first N letters of string s.
+3. Compare two hashtables, which is also O(1).
+4. If they are the same, we found anagram of t in s.
+5. If they are not the same, advance the window 1 character forward and update
+   counts in current "window" hashtable accordingly.
+6. repeat until the end of string s.
+
+This is a modification of the Rabin-Karp algorithm that does string search.
+
+Question 2.
+-----------
+
+Given a string a, find the longest palindromic substring contained in a.
+
+Answer:
+-------
+
+TODO
+
+Question 3.
+-----------
+
+Given an undirected graph G, find the minimum spanning tree within G.
+A minimum spanning tree connects all vertices in a graph with the smallest
+possible total weight of edges. Your function should take in and return
+an adjacency list structured like this:
+
+{
+    'A': [('B', 2)],
+    'B': [('A', 2), ('C', 5)],
+    'C': [('B',5)]
+}
+
+Vertices are represented as unique strings.
+
+Answer:
+-------
+
+TODO
+
+Question 4.
+-----------
+
+Find the least common ancestor between two nodes on a binary search tree.
+The least common ancestor is the farthest node from the root that is an
+ancestor of both nodes. For example, the root is a common ancestor of
+all nodes on the tree, but if both nodes are descendants of the root's
+left child, then that left child might be the lowest common ancestor.
+
+Answer:
+-------
+
+TODO
+
+Question 5.
+-----------
+
+Find the element in a singly linked list that's m elements from the end.
+For example, if a linked list has 5 elements, the 3rd element from the end is
+the 3rd element.
+
+Answer:
+-------
+
+For this question, I used the provided Node class that has "data" and "next"
+fields. I also added a helper method "" that creates a linked list from the
+list of values, and returns a head node.
+
+I use two pointers. First, both "fast" and "slow" point to the head node. Then
+"fast" pointer walks m - 1 steps forward. After that, fast and slow pointer
+start moving forward together, one step at a time. When fast pointer is at the
+end of the list, it means that slow pointer is pointing at m-th element
+from the end. I used m - 1 and not m because in a list such as 1-2-3, 1 and 3
+are two steps apart, but 1 is 3rd node from the end.
+
+Test cases.
+-----------
+
+I didn't like the suggested solution to print out the outputs and provide expected
+answers as comments. This approach requires whever evaluates the code to run the
+code, read through the output, and compare the output to the comments. This is slow
+and error-prone. Instead, I used assert statements to compare expected and actual
+outputs. If everything is as expected, the program will print "QX: OK" for every
+question number X. If not, there will be an exception. Because this submission
+is not to evaluate best Python coding practices, I did not introduce any testing
+frameworks, such as nosetests, py.test, etc.

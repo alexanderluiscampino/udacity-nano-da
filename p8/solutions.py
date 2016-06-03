@@ -215,28 +215,63 @@ def question4(T, r, n1, n2):
     return result.value
 
 
-def test_q4():
-    assert question4(
-        [[0, 1, 0, 0, 0],
-         [0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0],
-         [1, 0, 0, 0, 1],
-         [0, 0, 0, 0, 0]], 3, 1, 4) == 3
-    print('Q4: OK')
+class Node(object):
+    """Linked list node."""
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+    def __repr__(self):
+        values = [self.data]
+        current = self.next
+        while current:
+            values.append(current.data)
+            current = current.next
+        return ' -> '.join(['{}'.format(v) for v in values])
 
 
-def test_q3():
-    g1 = {
-        'A': [('B', 2)],
-        'B': [('A', 2), ('C', 5)],
-        'C': [('B', 5)]
-    }
-    a1 = {
-        'A': [('B', 2)],
-        'B': [('C', 5)]
-    }
-    assert question3(g1) == a1
-    print('Q3: OK')
+def create_ll(values):
+    """Convenience method for testing linked list."""
+    head = None
+    if values:
+        head = Node(values[0])
+        current = head
+        if len(values) > 1:
+            for v in values[1:]:
+                current.next = Node(v)
+                current = current.next
+    return head
+
+
+def question5(ll, m):
+    """
+    Find the element in a singly linked list that's m elements from the end.
+    For example, if a linked list has 5 elements, the 3rd element from the end is
+    the 3rd element. The function definition should look like "question5(ll, m)",
+    where ll is the first node of a linked list and m is the "mth number from the end".
+    Return the value of the node at that position.
+    :param ll: Node root
+    :param m: int number of steps from end
+    :return: int node value
+    """
+    slow = ll
+    fast = ll
+
+    # Move fast pointer forward m - 1 times
+    for i in range(m - 1):
+        fast = fast.next
+        if fast is None:
+            # Our list is shorter than the range asked.
+            return None
+
+    # Now move both fast and slow pointers until end of list.
+    while True:
+        if fast.next is None:
+            return slow.data
+        if slow.next is None:
+            return None
+        fast = fast.next
+        slow = slow.next
 
 
 def test_q1():
@@ -254,11 +289,45 @@ def test_q2():
     print('Q2: OK')
 
 
+def test_q3():
+    g1 = {
+        'A': [('B', 2)],
+        'B': [('A', 2), ('C', 5)],
+        'C': [('B', 5)]
+    }
+    a1 = {
+        'A': [('B', 2)],
+        'B': [('C', 5)]
+    }
+    assert question3(g1) == a1
+    print('Q3: OK')
+
+
+def test_q4():
+    assert question4(
+        [[0, 1, 0, 0, 0],
+         [0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0],
+         [1, 0, 0, 0, 1],
+         [0, 0, 0, 0, 0]], 3, 1, 4) == 3
+    print('Q4: OK')
+
+
+def test_q5():
+    l1 = create_ll([1, 2, 3, 4, 5])
+    assert question5(l1, 3) == 3
+    assert question5(l1, 4) == 2
+    assert question5(l1, 5) == 1
+    assert question5(l1, 6) is None
+    print('Q5: OK')
+
+
 def main():
     test_q1()
     test_q2()
     test_q3()
     test_q4()
+    test_q5()
 
 
 if __name__ == '__main__':
