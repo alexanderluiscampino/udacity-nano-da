@@ -125,6 +125,106 @@ def question3(G):
     return mst.as_list()
 
 
+class TreeNode:
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+
+    def add_child(self, other):
+        if other.value > self.value:
+            self.right = other
+        else:
+            self.left = other
+
+    def __repr__(self):
+        return '{}'.format(self.value)
+
+
+class BST(object):
+    def __init__(self, root):
+        self.root = root
+
+    @classmethod
+    def from_matrix(cls, m, r):
+        nodes = {}
+        # Collect all nodes in a dictionary by value
+        for node_value in range(len(m[0])):
+            nodes[node_value] = TreeNode(node_value)
+
+        # Go through the dictionary and assign node children
+        for node_value in nodes:
+            for other_value, is_link in enumerate(m[node_value]):
+                if is_link:
+                    nodes[node_value].add_child(nodes[other_value])
+
+        return BST(nodes[r])
+
+    def lca(self, root, v1, v2):
+        """Find lowest common ancestor node for values v1 and v2.
+        :param root: TreeNode
+        :param v1: int node value
+        :param v2: int node value
+        """
+        if root is None:
+            return None
+
+        if v1 < root.value and v2 < root.value:
+            return self.lca(root.left, v1, v2)
+
+        if v1 > root.value and v2 > root.value:
+            return self.lca(root.right, v1, v2)
+        return root
+
+    def __repr__(self):
+        return self.format_tree(self.root)
+
+    def format_node(self, node):
+        return '{}: ({}, {})'.format(node.value, node.left, node.right)
+
+    def format_tree(self, root):
+        if root:
+            return '{}\n{}\n{}'.format(
+                self.format_node(root),
+                self.format_node(root.left),
+                self.format_node(root.right))
+
+
+def question4(T, r, n1, n2):
+    """
+    Find the least common ancestor between two nodes on a binary search tree.
+    The least common ancestor is the farthest node from the root that is an
+    ancestor of both nodes. For example, the root is a common ancestor of
+    all nodes on the tree, but if both nodes are descendants of the root's
+    left child, then that left child might be the lowest common ancestor.
+    You can assume that both nodes are in the tree, and the tree itself
+    adheres to all BST properties. The function definition should look like
+    "question4(T, r, n1, n2)", where T is the tree represented as a matrix,
+    where the index of the list is equal to the integer stored in that node
+    and a 1 represents a child node, r is a non-negative integer representing
+    the root, and n1 and n2 are non-negative integers representing the two
+    nodes in no particular order.
+    :param T: Tree as 2d array
+    :param r: root node value
+    :param n1: first node to search for
+    :param n2: second node to search for
+    :return: int
+    """
+    tree = BST.from_matrix(T, r)
+    result = tree.lca(tree.root, n1, n2)
+    return result.value
+
+
+def test_q4():
+    assert question4(
+        [[0, 1, 0, 0, 0],
+         [0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0],
+         [1, 0, 0, 0, 1],
+         [0, 0, 0, 0, 0]], 3, 1, 4) == 3
+    print('Q4: OK')
+
+
 def test_q3():
     g1 = {
         'A': [('B', 2)],
@@ -158,6 +258,7 @@ def main():
     test_q1()
     test_q2()
     test_q3()
+    test_q4()
 
 
 if __name__ == '__main__':
