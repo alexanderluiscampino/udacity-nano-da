@@ -34,7 +34,19 @@ Given a string a, find the longest palindromic substring contained in a.
 Answer:
 -------
 
-TODO
+I thought of two ways of doing this.
+
+1. For each substring of string a, check if it's palindromic. If it is, keep track
+   of the longest one in a variable. Complexity is O(n^3).
+2. Check every position in a word around which palindrome can be centered.
+   Position can be at a letter for even length palindrome, or between the letters
+   for odd length one. That's (N * 2 + 1) positions. At each position, have 2
+   pointers, one moving left and two moving right, as long as letters at left and
+   right pointers match. Once they stop matching, we found longest palindrome for
+   this position. Complexity is O(n^2). This is the solution I implemented.
+
+The O(n) solution does exist and it's called Manacher's algorithm. It's more tricky
+though, and I don't think I would be able to reproduce it in an actual interview.
 
 Question 3.
 -----------
@@ -55,7 +67,20 @@ Vertices are represented as unique strings.
 Answer:
 -------
 
-TODO
+There are a few algorithms to choose from for building MSTs. Two of the well-known
+ones are Prim's and Kruskal's.
+
+Kruskal's algorithm will grow a solution from the cheapest edge by adding the
+next cheapest edge, provided that it doesn't create a cycle.
+
+Prim's algorithm will grow a solution from a random vertex by adding the next
+cheapest vertex, the vertex that is not currently in the solution but connected
+to it by the cheapest edge.
+
+They are both greedy algorithms. Prim's algorithm is more efficient on graphs
+with a lot of edges because it has complexity O(E+V lgV) vs Kruskal's O(E logV)
+Kruskal's is simpler to code. I would be more likely to code Kruskal's
+successfully in an interview, so I chose that.
 
 Question 4.
 -----------
@@ -69,7 +94,13 @@ left child, then that left child might be the lowest common ancestor.
 Answer:
 -------
 
-TODO
+This is a recursive algorithm that I implemented as "lca" method
+in a BST class. We start with a root node. For every node that we look at,
+if node's value is bigger than both n1 and n2, then they are both
+to the left of the node and we should look further in the left subtree.
+If node's value is smaller than n1 and n2, then n1 and n2 are on the
+right and we recurse into the right subtree. Otherwise current node is
+LCA.
 
 Question 5.
 -----------
