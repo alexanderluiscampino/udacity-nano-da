@@ -112,6 +112,9 @@ def question3(G):
     :return: adjacency list
     :rtype: dict
     """
+    if not G:
+        return None
+
     # Create a dictionary mapping every vertex to its own tree at first.
     trees = {node: node for node in G}
     # Sort all edges by weight.
@@ -210,6 +213,9 @@ def question4(T, r, n1, n2):
     :param n2: second node to search for
     :return: int
     """
+    if not T or r is None or n1 is None or n2 is None:
+        return None
+
     tree = BST.from_matrix(T, r)
     result = tree.lca(tree.root, n1, n2)
     return result.value
@@ -299,7 +305,21 @@ def test_q3():
         'A': [('B', 2)],
         'B': [('C', 5)]
     }
+    g2 = {
+        'A': [('B', 1), ('C', 2)],
+        'B': [('D', 3)],
+        'C': [('D', 4)],
+        'D': []
+    }
+    a2 = {
+        'A': [('B', 1), ('C', 2)],
+        'B': [('D', 3)]
+    }
     assert question3(g1) == a1
+    assert question3(g2) == a2
+    assert question3(None) is None
+    assert question3({}) is None
+
     print('Q3: OK')
 
 
@@ -310,6 +330,11 @@ def test_q4():
          [0, 0, 0, 0, 0],
          [1, 0, 0, 0, 1],
          [0, 0, 0, 0, 0]], 3, 1, 4) == 3
+    assert question4([[0, 0, 0],
+                      [1, 0, 1],
+                      [0, 0, 0]], 1, 0, 2) == 1
+    assert question4([], None, None, None) is None
+    assert question4(None, None, None, None) is None
     print('Q4: OK')
 
 
