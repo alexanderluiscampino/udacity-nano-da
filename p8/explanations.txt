@@ -11,8 +11,9 @@ Answer:
 At first, I wrote a brute-force solution, that would generate all permutations
 of t (using itertools.permutations), and check if they can be found in s. But
 afterwards I looked it up, and found out some better ways to do it. The
-brute-force complexity is O(n * m^2). I implemented an O(n) solution as
-follows:
+brute-force complexity is O(n * m^2), since it takes m^2 time to generate all
+permutations. I implemented an O(n) solution with O(n) space requirement for
+the hash table. It is as follows:
 
 1. Calculate a hashtable of frequencies of all letters in t. If t is "ud", it is:
    {'u': 1, 'd': 1}. Complexity of this operation is O(1) because it is a
@@ -44,6 +45,8 @@ I thought of two ways of doing this.
    pointers, one moving left and two moving right, as long as letters at left and
    right pointers match. Once they stop matching, we found longest palindrome for
    this position. Complexity is O(n^2). This is the solution I implemented.
+   Space requirement is O(n), all we need here is to keep one longest palindrome
+   string, and O(1) for pointers.
 
 The O(n) solution does exist and it's called Manacher's algorithm. It's more tricky
 though, and I don't think I would be able to reproduce it in an actual interview.
@@ -80,7 +83,8 @@ to it by the cheapest edge.
 They are both greedy algorithms. Prim's algorithm is more efficient on graphs
 with a lot of edges because it has complexity O(E+V lgV) vs Kruskal's O(E logV)
 Kruskal's is simpler to code. I would be more likely to code Kruskal's
-successfully in an interview, so I chose that.
+successfully in an interview, so I chose that. It also requires O(E) space to
+keep the sorted list of edges.
 
 Question 4.
 -----------
@@ -100,7 +104,9 @@ if node's value is bigger than both n1 and n2, then they are both
 to the left of the node and we should look further in the left subtree.
 If node's value is smaller than n1 and n2, then n1 and n2 are on the
 right and we recurse into the right subtree. Otherwise current node is
-LCA.
+LCA. Complexity is O(log(n)), because this is how many steps search in BST
+takes. Constant space O(1) is required.
+
 
 Question 5.
 -----------
@@ -121,7 +127,9 @@ I use two pointers. First, both "fast" and "slow" point to the head node. Then
 start moving forward together, one step at a time. When fast pointer is at the
 end of the list, it means that slow pointer is pointing at m-th element
 from the end. I used m - 1 and not m because in a list such as 1-2-3, 1 and 3
-are two steps apart, but 1 is 3rd node from the end.
+are two steps apart, but 1 is 3rd node from the end. Complexity is O(n) with
+O(1) space requirement. It's not possible to improve the O(n), unless we have a
+doubly linked list.
 
 Test cases.
 -----------
