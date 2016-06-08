@@ -20,6 +20,14 @@ def question1(s, t):
             result[letter] = result.get(letter, 0) + 1
         return result
 
+    # Can't search for a substring within None
+    if s is None:
+        return False
+
+    # Empty string is a substring of any string
+    if t == '':
+        return True
+
     if s and t and len(t) <= len(s):
         head = 0
         tail = head + len(t) - 1
@@ -47,23 +55,29 @@ def question2(a):
     :param a: string to search for palindrome in
     :return:
     """
+    # No palindromes in None
+    if a is None:
+        return None
+
+    # Longest palindrome in empty string is empty string
+    if a == '':
+        return ''
+
     max_len = 0
     max_pal = None
+    l = len(a)
+    npos = 2 * l + 1
+    for i in range(npos):
+        head = i / 2
+        tail = head + i % 2
+        while head > 0 and tail < l and a[head - 1] == a[tail]:
+            head -= 1
+            tail += 1
 
-    if a:
-        l = len(a)
-        npos = 2 * l + 1
-        for i in range(npos):
-            head = i / 2
-            tail = head + i % 2
-            while head > 0 and tail < l and a[head - 1] == a[tail]:
-                head -= 1
-                tail += 1
-
-            current_len = tail - head
-            if current_len > max_len:
-                max_len = current_len
-                max_pal = a[head:tail]
+        current_len = tail - head
+        if current_len > max_len:
+            max_len = current_len
+            max_pal = a[head:tail]
 
     return max_pal
 
@@ -283,7 +297,9 @@ def question5(ll, m):
 def test_q1():
     assert question1('udacity', 'ad') == True
     assert question1('udacity', 'boo') == False
-    assert question1('', '') == False
+    assert question1('', '') == True
+    assert question1('foo', '') == True
+    assert question1(None, 'ab') == False
     assert question1(None, None) == False
     print('Q1: OK')
 
@@ -291,6 +307,7 @@ def test_q1():
 def test_q2():
     assert question2('abababa') == 'abababa'
     assert question2('forgeeksskeegfor') == 'geeksskeeg'
+    assert question2('') == ''
     assert question2(None) is None
     print('Q2: OK')
 
